@@ -1,0 +1,234 @@
+.container{
+    background-color: var(--sibasiGrey);
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+.menu{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    float: left; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: width 0.5s ease;
+    z-index: 1000;
+    background-color: #465268;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  .main{
+    position: fixed;   
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    float: right; 
+    transition: margin-left 0.3s ease, width 0.5s ease;
+    display: flex; 
+    flex-direction: column;    
+    
+  }
+  
+  .logo{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 10px 20px 30px;
+    box-sizing: border-box;
+  }
+  
+  .logo img{
+    width: 60%;
+  }
+  
+
+  .menu-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0px 10px 0px;
+    box-sizing: border-box;
+    overflow: hidden;
+    
+  }
+  
+    
+  .profile i{
+    color: var(--text-color);
+  }
+  
+  .header span{
+    font-weight: 600;
+    color: var(--text-color);
+    letter-spacing: 1px;
+  }
+  
+  .header strong{
+    font-weight: 900;
+  }
+  
+  .profile{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .profile img{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: var(--sibasiGrey);
+  }
+  
+  .company{
+    display: flex;
+    gap: 10px; 
+    background: linear-gradient(271.89deg, #465268, #7382a1);
+    padding: 7px 55px;
+    border-radius: 14px 28px 14px 28px;
+    color: var(--sibasiWhite);
+    cursor: pointer;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+  
+  .company i{
+    color: var(--sibasiWhite);
+  }
+  
+  .company span{
+    color: var(--sibasiWhite);
+    font-weight: 100;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+  
+  .company:hover{
+    transform: translateX(5px);
+  }
+  
+
+  .toggle{
+    
+    width: 23px;
+    height: 23px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .toggle i{
+    color: var(--sibasiWhite);
+    transition: all 0.3s ease;
+  }
+  
+  .menu-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+  .menu_list{  
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column; 
+    gap: 5px;
+    align-items: left;
+    color: var(--text-color);
+    cursor: pointer;
+
+    
+  }
+  .menu_list span{
+    font-weight: 400;
+    color: var(--text-color);
+    letter-spacing: 1px;  
+  
+    font-size: 0.95rem;
+  }
+  .menu_list .head span{
+    font-weight: 700;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    padding-left: 20px;
+    
+    height: 20px;
+    opacity: 0.7;
+  }
+  .menu_list i{
+    margin-right: 8px;
+    color: var(--text-color);
+   
+    font-size: 0.9rem;
+  }
+  .menu_items{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: left;
+    color: var(--text-color);
+    cursor: pointer;
+   
+  }
+  .nav_item{
+    width: 100%;
+    display: flex;
+    color: var(--sibasiWhite);
+    padding: 7px 15px; 
+    align-items: center;
+  
+    opacity: 0.85;
+    box-sizing: border-box;
+  }
+  .nav_item:hover{
+    transform: translateX(5px);
+    background: linear-gradient(271.89deg,#7382a1,  #465268);
+    
+  }
+  .nav_item.active{
+    background: linear-gradient(271.89deg,#7382a1,  #465268);
+    border-right: 3px solid var(--sibasiGrey);
+    transition: all 0.8s ease;
+   
+  }
+  .nav_item span{
+    color: var(--sibasiWhite);
+    font-weight: 100;
+    font-size: 14px;
+    letter-spacing: 1px;
+
+  }
+  .nav_item i{
+    color: var(--sibasiWhite);
+    
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+  
+  
+.header{
+    position: fixed;
+    top: 0px;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--sibasiWhite);
+    padding: 0px 20px;
+    z-index: 100;
+    transition: all 0.5 s ease;
+  
+}
