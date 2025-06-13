@@ -14,7 +14,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    transition: width 0.5s ease;
+    transition: width 0.3s ease;
     z-index: 1000;
     background-color: #465268;
     box-sizing: border-box;
@@ -27,9 +27,11 @@
     height: 100%;
     width: 100%;
     float: right; 
-    transition: margin-left 0.3s ease, width 0.5s ease;
+    
     display: flex; 
-    flex-direction: column;    
+    flex-direction: column;
+    box-sizing: border-box;
+    align-items: center;    
     
   }
   
@@ -208,19 +210,18 @@
     font-weight: 100;
     font-size: 14px;
     letter-spacing: 1px;
+    margin-left: 7px;
 
   }
   .nav_item i{
     color: var(--sibasiWhite);
-    
     font-weight: 500;
     font-size: 1.1rem;
   }
   
   
 .header{
-    position: fixed;
-    top: 0px;
+    
     height: 60px;
     width: 100%;
     display: flex;
@@ -231,4 +232,12 @@
     z-index: 100;
     transition: all 0.5 s ease;
   
+}
+.content{
+    margin-top: 20px;
+    background-color: var(--sibasiWhite);
+    width: 90%;
+    min-height: calc(100vh - 90px);
+    overflow: hidden;
+    position: relative;
 }
