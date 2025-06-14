@@ -1,1 +1,52 @@
-<p>reports works!</p>
+<div class="container">
+       <div class="head">
+        <button class="create-btn">
+            <i class="pi pi-plus"></i>
+            <span>Create Report</span>
+        </button>
+        <div class="search">
+            <i class="pi pi-search"></i>
+            <input type="text" placeholder="Search ..."
+             (ngModelChange)="searchProjects($event)"
+             [(ngModel)]="searchTerm"
+            >            
+        </div>
+       </div>
+       <div class="table">
+        <p-table
+        [value]="filteredProjects"
+        [paginator]="filteredProjects && filteredProjects.length > 0"
+        [rows]="4"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="white-table"
+        [rowsPerPageOptions]="[5, 10, 20]"
+    >
+        <ng-template #header>
+            <tr>
+                <th pSortableColumn="time" style="width:20%">
+                    Date Created <p-sortIcon field="time" />
+                </th>
+                <th pSortableColumn="name" style="width:20%">
+                    Name <p-sortIcon field="name" />
+                </th>
+                <th pSortableColumn="category" style="width:20%">
+                    Description <p-sortIcon field="category" />
+                </th>
+                <th pSortableColumn="quantity" style="width:20%">
+                     
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-project *ngIf="filteredProjects">
+            <tr (click)="onClickReport(project.id)">
+                <td>{{ project.created_date }}</td>
+                <td>{{ project.name }}</td>
+                <td>{{ project.description }}</td>
+                <td style="text-align: center;">
+                    <i  class="pi pi-angle-double-right"></i>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+       </div>
+</div>

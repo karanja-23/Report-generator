@@ -1,0 +1,285 @@
+.container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.cover{
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    margin-top: 50px;
+    border-radius: 10px;
+    background-color: var(--sibasiWhite);
+    box-shadow: 0px 0px 10px #7382a1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.nav{
+    position: sticky;
+    top: 0;
+    padding-top: 5px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--sibasiWhite);
+    padding: 15px 15px;
+    letter-spacing: 0.08rem;
+    border-radius: 10px 10px 0px 0px;
+    box-sizing: border-box;
+    z-index: 100;
+}
+.project-details{
+      
+    align-self: center;
+    margin-top: 20px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;   
+    
+    position: relative;
+    color: #465268;
+
+}
+.head{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #465268;
+    color: var(--sibasiWhite);
+    padding: 15px 15px;
+    letter-spacing: 0.08rem;
+    border-radius: 10px 10px 0px 0px;
+    box-sizing: border-box;
+}
+.head span{
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.back {
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--sibasiGrey, #f8f9fa);
+    color: #465268;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.back:hover {
+    transform: translateX(-5px);
+}
+.details{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 20px;
+    color: #465268;
+}
+.dets{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #465268;
+}
+.dets span{
+    font-weight: 600;
+    font-size: 1.15rem;
+}
+.dets label{
+    font-weight: 600;
+    font-size: 1.02rem;
+}
+.dets input, textarea{
+    width: 90%;
+    padding: 11px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    color: #465268;
+    border: 2px solid #7382a1;
+    transition: all 0.3s ease;
+}
+.dets input:focus, textarea:focus{
+    transform: translateX(2px);
+   
+}
+::ng-deep .date-ng{
+    width: 90% !important;
+    border: none !important;
+    border-radius: 5px !important;
+    border: 2px solid #7382a1 !important;
+}
+
+::ng-deep .date-ng input{
+    background-color: var(--sibasiWhite) !important;
+    color: var(--text-color) !important;
+    border: none !important;
+
+}
+::ng-deep .date-ng button{
+    background-color: #465268 !important;
+    color: var(--sibasiWhite) !important;
+    border: none !important;
+}
+::ng-deep .date-ng input:focus{
+    outline: none !important;
+}
+::ng-deep .date-ng .p-datepicker {
+    padding: 0px !important;
+    background: var(--sibasiWhite) !important;
+    background-color: var(--sibasiWhite) !important;
+    border: none !important;
+}
+::ng-deep .date-ng .p-datepicker-panel{
+    background-color: var(--sibasiWhite) !important;
+    color: #465268;
+}
+
+
+::ng-deep .date-ng .p-datepicker-header {
+    background-color: var(--sibasiWhite) !important;
+    color: var(--text-color) !important;
+    padding: 12px 16px !important;
+}
+::ng-deep .date-ng .p-datepicker-title {
+    color: var(--text-color) !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+::ng-deep .date-ng .p-datepicker-calendar {
+    background-color: var(--sibasiWhite) !important;
+    width: 100% !important;
+    color: #465268;
+}
+::ng-deep .date-ng .p-datepicker-calendar thead  {
+    background-color: var(--sibasiWhite) !important;
+    color: var(--text-color) !important;
+    font-weight: 600 !important;
+    padding: 8px !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    opacity: 0.7 !important;
+}
+::ng-deep .date-ng .p-datepicker-calendar tbody td {
+    background-color: var(--sibasiWhite) !important;
+    padding: 2px !important;
+    text-align: center !important;
+    color: #465268 !important;
+}
+::ng-deep .date-ng .p-datepicker-calendar tbody td > span {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    color: var(--text-color) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    background-color: transparent !important;
+}
+::ng-deep .date-ng span{
+    color: #465268 !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+::ng-deep .date-ng .p-datepicker-calendar tbody td > span.p-highlight {
+    background-color: var(--sibasiWhite) !important;
+    color: var(--text-color) !important
+}
+.update-btn{
+    background-color: #465268;
+    border: none;
+    margin-top: 10px;
+    padding: 7px 19px;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    color: var(--sibasiWhite);
+    align-items: center;
+    border-radius: 14px 28px 14px 28px;
+}
+.update-btn i{
+    font-size: 0.75rem;
+}
+.update-btn span{
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+}
+.severity{
+    width: 80%;
+    align-self: center;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;   
+    position: relative;
+    color: #465268;
+    padding: 11px 15px;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+.severity-container{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.severity-item{
+    width: 35%;
+    height: 170px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f3f6fa;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    transition: all 0.3s ease;
+    
+}
+.severity-item:hover{
+    
+    transform: translateY(-5px)
+}
+.severity-item span{
+    font-size: 0.99rem;
+    font-weight: 500;
+}
+.severity-item i{
+    font-size: 2.3rem;
+}
+.maximize{
+    
+    background-color: var(--sibasiGrey);
+    width: 30px;
+    height: 30px;
+    border-radius: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.maximize i{
+    font-size: 1.0rem;
+    color: #465268;
+}
+
+.maximize:hover {
+    transform: translateX(5px);
+}
