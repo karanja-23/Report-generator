@@ -1,0 +1,72 @@
+<div class="container">
+    <div class="nav">
+        <div class="back" (click)="goBack()">
+            <i class="pi pi-arrow-circle-left"></i>
+        </div>
+        <div class="maximize">
+            <i class="pi pi-window-maximize"></i>
+        </div>
+    </div>
+    <div class="cover">
+        <div class="project-details">
+            <div class="head">
+                <span>Project Information</span>
+            </div>
+            <div class="details">
+                <div class="dets">
+                    <label htmlfor="name">Project Name</label>
+                    <input id="name" type="text"[value]="project.name" >
+                </div>
+                <div class="dets">
+                    <label htmlfor="date">Date Created</label>
+                    <p-datepicker [styleClass]="'date-ng'" [(ngModel)]="date" [showIcon]="true" inputId="buttondisplay" [showOnFocus]="false" />
+    
+    
+                </div>
+                <div class="dets">
+                    <label htmlfor="description">Description</label>
+                    <textarea id="description" rows="5" cols="50" placeholder="Enter descroption" [value]="project.description" ></textarea>
+                </div>
+                <div>
+                    <button class="update-btn">
+                        <i class="pi pi-plus"></i>
+                        <span>Edit details</span>
+                    </button>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+    <div class="severity">
+        <div class="severity-container">
+            <div class="severity-item">
+                <i class="pi pi-exclamation-triangle"></i>
+                <span>Critical</span>
+                <span>0</span>
+
+            </div>
+            <div class="severity-item">
+                <i class="pi pi-exclamation-triangle"></i>
+                <span>High</span>
+                <span>0</span>
+            </div>
+
+        </div>
+        <div class="severity-container">
+            <div class="severity-item">
+                <i class="pi pi-exclamation-triangle"></i>
+                <span>Medium</span>
+                <span>0</span>
+
+            </div>
+            <div class="severity-item">
+                <i class="pi pi-exclamation-triangle"></i>
+                <span>Low</span>
+                <span>0</span>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
