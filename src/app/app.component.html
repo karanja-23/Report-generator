@@ -4,6 +4,7 @@
     [style.width]="menuIsOpen ? '220px' : '80px'"
     (mouseenter)="mouseOver()"
     (mouseleave)="mouseOut()"
+    [style.display]="projectViewService.expandReport ? 'none' : 'block'"
   >
     <div class="logo">
       <img

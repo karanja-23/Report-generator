@@ -3,24 +3,30 @@ import { RouterModule,ActivatedRoute } from '@angular/router';
 import { ReportsService } from '../../Services/reports.service';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
-
+import { CommonModule } from '@angular/common';
+import { ProjectViewService } from '../../Services/project-view.service';
 @Component({
   selector: 'app-view-report',
-  imports: [DatePickerModule,FormsModule],
+  imports: [DatePickerModule,FormsModule, CommonModule],
   templateUrl: './view-report.component.html',
   styleUrl: './view-report.component.css'
 })
 export class ViewReportComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
-    private reportsService: ReportsService
+    private reportsService: ReportsService,
+    public projectViewService: ProjectViewService
   ) { }
   projectId: number = 0
   project: any
-  date: any
-  ngOnInit() {
+  date: any;
+  expandReport: boolean = false
+  findings: any = []
+  
+  async ngOnInit() {
     this.projectId = this.route.snapshot.params['id'];
-    this.getProjectById(this.projectId);
+    await this.getProjectById(this.projectId);
+    await this.getFindings();
     
    }
    async getProjectById(id: number){
@@ -30,6 +36,23 @@ export class ViewReportComponent implements OnInit {
     this.date = new Date(this.project.created_date); 
   }
   goBack(){
+    
+    if(this.expandReport){
+      this.expandReport = this.projectViewService.toggleView();
+    }
     window.history.back();
   }
+  toggle(){
+    this.expandReport = this.projectViewService.toggleView();
+  }
+  async getFindings(){
+    console.log(this.project);
+    this.project.categories.forEach((category: any) => {
+      category.findings.forEach((finding: any) => {
+        this.findings.push(finding);
+      })
+    })
+    console.log(this.findings);
+  }
+  
 }

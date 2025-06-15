@@ -1,21 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-
+import { ProjectViewService } from './Services/project-view.service';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet,CommonModule,RouterLink,RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   
-  menuIsOpen: boolean = true;
-  toggleIcon: string = 'pi pi-circle-on';
-  menuIsLocked: boolean = true;
-  left: string = '220px';
+  menuIsOpen: boolean = false;
+  toggleIcon: string = 'pi pi-circle-off';
+  menuIsLocked: boolean = false;
+  left: string = '80px';
   justUnpinned: boolean = false;
-
+  expandedReport: boolean = false
+  constructor(public projectViewService: ProjectViewService) { }
+  ngOnInit(): void {
+    this.expandedReport = this.projectViewService.expandReport
+  }
   toggleMenu() {
     if (this.menuIsLocked) {
       this.menuIsLocked = false;
@@ -60,6 +64,9 @@ export class AppComponent {
       this.menuIsOpen = false;
             
     }
+  }
+  disableMenu(){
+    this.expandedReport = this.projectViewService.expandReport
   }
 
 }
