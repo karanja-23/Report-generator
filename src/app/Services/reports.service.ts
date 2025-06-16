@@ -18,4 +18,9 @@ export class ReportsService {
     const data = await response.json();
     return data;
   }
+  async getCategories(){
+    const response = await fetch(this.url + 'get/categories');
+    const data = await response.json();
+    return data;
+  }
 }

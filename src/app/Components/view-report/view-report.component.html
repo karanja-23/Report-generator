@@ -48,27 +48,27 @@
     </div>
     <div class="severity">
         <div class="severity-container">
-            <div class="severity-item" style="color: #dc3545;">
+            <div class="severity-item" style="color: #dc3545; box-shadow: 0 0 2px #dc3545;">
                 <i class="pi pi-exclamation-circle"></i>
                 <span>Critical</span>
-                <span>0</span>
+                <span>{{critical}}</span>
             </div>
-            <div class="severity-item" style="color: #fd7e14;">
+            <div class="severity-item" style="color: #fd7e14; box-shadow: 0 0 2px #fd7e14;">
                 <i class="pi pi-exclamation-triangle"></i>
                 <span>High</span>
-                <span>0</span>
+                <span>{{high}}</span>
             </div>
         </div>
         <div class="severity-container">
-            <div class="severity-item" style="color: #ffc107;">
+            <div class="severity-item" style="color: #ffc107; box-shadow: 0 0 2px #ffc107;">
                 <i class="pi pi-info-circle"></i>
                 <span>Medium</span>
-                <span>0</span>
+                <span>{{medium}}</span>
             </div>
-            <div class="severity-item" style="color: #28a745;">
+            <div class="severity-item" style="color: #28a745; box-shadow: 0 0 2px #28a745;">
                 <i class="pi pi-check-circle"></i>
                 <span>Low</span>
-                <span>0</span>
+                <span>{{low}}</span>
             </div>
         </div>
    
@@ -81,51 +81,103 @@
             <span>Add finding</span>
         </button>
     </div>
-    <div class="findings-container" *ngFor="let finding of findings">
-        <div class="finding-head">
-            <div class="labels">
-                <div class="label-1">
-                    <span>Medium</span>
+    <div *ngIf="findings.length > 0">
+
+        <div class="findings-container" *ngFor="let finding of findings" >
+            <div class="finding-head">
+                <div class="labels">
+                    <div class="label-1">
+                        <span>Medium</span>
+                    </div>
+                    <div class="label-2">
+                        <span>Functional</span> 
+                    </div>
+    
                 </div>
-                <div class="label-2">
-                    <span>Functional</span>
+                <div>
+                    <i class="pi pi-trash"></i>
                 </div>
-
+    
             </div>
-            <div>
-                <i class="pi pi-trash"></i>
+            <div class="title">
+                <label for="title">Title</label>
+                <input id="title" [value]="finding?.title" type="text" placeholder="Enter title">
             </div>
-
-        </div>
-        <div class="title">
-            <label for="title">Title</label>
-            <input id="title" [value]="finding?.title" type="text" placeholder="Enter title">
-        </div>
-        <div class="severity-select">
-            <div class="select-container">
-                <label for="severity">Severity</label>
-            <select name="severity" id="severity">
-                <option value="Critical">Critical</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
-            </select>
+            <div class="severity-select">
+                <div class="select-container">
+                    <label for="severity">Severity</label>
+                <select name="severity" [value]="finding?.severity" id="severity">
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                </div>
+                <div class="select-container">
+                    <label for="type">Type</label>
+                <select name="type" id="type">
+                    <option *ngFor="let category of categories" [value]="category.id">
+                        {{ category.name }}
+                      </option>
+                </select>
+                </div>
             </div>
-            <div class="select-container">
-                <label for="type">Type</label>
-            <select name="type" id="type">
-                <option value="Functional">Functional</option>
-                <option value="Security">Security</option>
-                <option value="Performance">Performance</option>
-            </select>
+            <div class="description">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" [value]="finding?.description" cols="30" rows="10"></textarea>
+    
             </div>
+    
+        </div><div class="findings-container" *ngFor="let finding of findings" >
+            <div class="finding-head">
+                <div class="labels">
+                    <div class="label-1">
+                        <span>Medium</span>
+                    </div>
+                    <div class="label-2">
+                        <span>Functional</span>
+                    </div>
+    
+                </div>
+                <div>
+                    <i class="pi pi-trash"></i>
+                </div>
+    
+            </div>
+            <div class="title">
+                <label for="title">Title</label>
+                <input id="title" [value]="finding?.title" type="text" placeholder="Enter title">
+            </div>
+            <div class="severity-select">
+                <div class="select-container">
+                    <label for="severity">Severity</label>
+                <select name="severity" [value]="finding?.severity" id="severity">
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                </div>
+                <div class="select-container">
+                    <label for="type">Type</label>
+                <select name="type" id="type">
+                    <option *ngFor="let category of categories" [value]="category.id">
+                        {{ category.name }}
+                      </option>
+                </select>
+                </div>
+            </div>
+            <div class="description">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" [value]="finding?.description" cols="30" rows="10"></textarea>
+    
+            </div>
+    
         </div>
-        <div class="description">
-            <label for="description">Description</label>
-            <textarea name="description" id="description" [value]="finding?.description" cols="30" rows="10"></textarea>
-
-        </div>
-
+        <button class="update-btn" style="margin-top: 70px;">
+            <i class="pi pi-plus"></i>
+            <span>View report</span>
+        </button>
     </div>
 </div>
 

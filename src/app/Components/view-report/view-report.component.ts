@@ -21,19 +21,26 @@ export class ViewReportComponent implements OnInit {
   project: any
   date: any;
   expandReport: boolean = false
-  findings: any = []
-  
+  findings: any = [];
+  categories: any = [];
+  high: number = 0;
+  medium: number = 0;
+  low: number = 0;
+  critical: number = 0;
   async ngOnInit() {
     this.projectId = this.route.snapshot.params['id'];
     await this.getProjectById(this.projectId);
     await this.getFindings();
-    
+    this.getCategories();
    }
    async getProjectById(id: number){
     const response = await fetch(this.reportsService.url + 'get/project/' + id);
     const data = await response.json();
     this.project = data;  
     this.date = new Date(this.project.created_date); 
+  }
+  async getCategories(){
+    this.categories = await this.reportsService.getCategories();
   }
   goBack(){
     
@@ -48,11 +55,24 @@ export class ViewReportComponent implements OnInit {
   async getFindings(){
     console.log(this.project);
     this.project.categories.forEach((category: any) => {
+
       category.findings.forEach((finding: any) => {
+        
+        
+          if (finding.severity === 'Critical') {
+            this.critical++;
+          } else if (finding.severity === 'High') {
+            this.high++;
+          } else if (finding.severity === 'Medium') {
+            this.medium++;
+          } else if (finding.severity === 'Low') {
+            this.low++;
+          }
+      
         this.findings.push(finding);
       })
     })
-    console.log(this.findings);
+ 
   }
   
 }

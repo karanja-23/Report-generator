@@ -16,6 +16,7 @@ export class ReportsComponent implements OnInit {
   projects: Projects[] = [];
   filteredProjects: Projects[] = [];
   searchTerm:string = '';
+  selectedProjectId: number | null = null;
   
   constructor(
     private router: Router,
@@ -43,5 +44,12 @@ export class ReportsComponent implements OnInit {
   }
   onClickReport(reportId: number){
     this.router.navigate(['reports', reportId]);
+  }
+  selectProject(projectId: number) {
+    if (this.selectedProjectId === projectId) {
+      this.selectedProjectId = null;
+    } else {
+      this.selectedProjectId = projectId;
+    }
   }
 }
