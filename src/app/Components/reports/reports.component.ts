@@ -5,6 +5,7 @@ import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { ProjectViewService } from '../../Services/project-view.service';
 @Component({
   selector: 'app-reports',
   imports: [TableModule, CommonModule,FormsModule,RouterModule],
@@ -15,14 +16,20 @@ export class ReportsComponent implements OnInit {
   projects: Projects[] = [];
   filteredProjects: Projects[] = [];
   searchTerm:string = '';
+  selectedProjectId: number | null = null;
+  
   constructor(
     private router: Router,
-    public reportsService: ReportsService
+    public reportsService: ReportsService,
+    public projectViewService: ProjectViewService
   ){}
 
   async ngOnInit(){
     this.projects = await this.reportsService.getProjects();
     this.filteredProjects = this.projects;
+    this.projectViewService.setView(false);
+    
+  
   }
   searchProjects(searchValue: string) {
     if (!searchValue || searchValue.trim() === '') {
@@ -37,5 +44,12 @@ export class ReportsComponent implements OnInit {
   }
   onClickReport(reportId: number){
     this.router.navigate(['reports', reportId]);
+  }
+  selectProject(projectId: number) {
+    if (this.selectedProjectId === projectId) {
+      this.selectedProjectId = null;
+    } else {
+      this.selectedProjectId = projectId;
+    }
   }
 }

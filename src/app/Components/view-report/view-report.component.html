@@ -1,12 +1,21 @@
-<div class="container">
+<div class="container" [class.active]="expandReport">
     <div class="nav">
-        <div class="back" (click)="goBack()">
-            <i class="pi pi-arrow-circle-left"></i>
+        <div class="back" (click)="goBack()" 
+        [style.background-color]="projectViewService.expandReport ? 'inherit' : 'var(--sibasiGrey)'"
+        >
+            <i [style.display]="projectViewService.expandReport ? 'none' : 'block'" class="pi pi-arrow-circle-left"></i>
         </div>
-        <div class="maximize">
-            <i class="pi pi-window-maximize"></i>
+        <div class="maximize" (click)="toggle()">
+            <i class="pi"
+             [ngClass]="{
+                'pi-window-maximize': !expandReport,
+                'pi-window-minimize': expandReport
+              }"
+                          
+            ></i>
         </div>
     </div>
+   <div class="doc">
     <div class="cover">
         <div class="project-details">
             <div class="head">
@@ -15,7 +24,7 @@
             <div class="details">
                 <div class="dets">
                     <label htmlfor="name">Project Name</label>
-                    <input id="name" type="text"[value]="project.name" >
+                    <input id="name" type="text"[value]="project?.name" >
                 </div>
                 <div class="dets">
                     <label htmlfor="date">Date Created</label>
@@ -25,11 +34,11 @@
                 </div>
                 <div class="dets">
                     <label htmlfor="description">Description</label>
-                    <textarea id="description" rows="5" cols="50" placeholder="Enter descroption" [value]="project.description" ></textarea>
+                    <textarea id="description" rows="5" cols="50" placeholder="Enter descroption" [value]="project?.description" ></textarea>
                 </div>
                 <div>
                     <button class="update-btn">
-                        <i class="pi pi-plus"></i>
+                        <i class="pi pi-pencil"></i>
                         <span>Edit details</span>
                     </button>
                 </div>
@@ -39,34 +48,138 @@
     </div>
     <div class="severity">
         <div class="severity-container">
-            <div class="severity-item">
-                <i class="pi pi-exclamation-triangle"></i>
+            <div class="severity-item" style="color: #dc3545; box-shadow: 0 0 2px #dc3545;">
+                <i class="pi pi-exclamation-circle"></i>
                 <span>Critical</span>
-                <span>0</span>
-
+                <span>{{critical}}</span>
             </div>
-            <div class="severity-item">
+            <div class="severity-item" style="color: #fd7e14; box-shadow: 0 0 2px #fd7e14;">
                 <i class="pi pi-exclamation-triangle"></i>
                 <span>High</span>
-                <span>0</span>
+                <span>{{high}}</span>
             </div>
-
         </div>
         <div class="severity-container">
-            <div class="severity-item">
-                <i class="pi pi-exclamation-triangle"></i>
+            <div class="severity-item" style="color: #ffc107; box-shadow: 0 0 2px #ffc107;">
+                <i class="pi pi-info-circle"></i>
                 <span>Medium</span>
-                <span>0</span>
-
+                <span>{{medium}}</span>
             </div>
-            <div class="severity-item">
-                <i class="pi pi-exclamation-triangle"></i>
+            <div class="severity-item" style="color: #28a745; box-shadow: 0 0 2px #28a745;">
+                <i class="pi pi-check-circle"></i>
                 <span>Low</span>
-                <span>0</span>
-
+                <span>{{low}}</span>
             </div>
         </div>
-
+   
+   </div>
+   <div class="findings">
+    <div class="head">
+        <span>Findings</span>
+        <button class="add-btn">
+            <i class="pi pi-plus"></i>
+            <span>Add finding</span>
+        </button>
     </div>
+    <div *ngIf="findings.length > 0">
+
+        <div class="findings-container" *ngFor="let finding of findings" >
+            <div class="finding-head">
+                <div class="labels">
+                    <div class="label-1">
+                        <span>Medium</span>
+                    </div>
+                    <div class="label-2">
+                        <span>Functional</span> 
+                    </div>
+    
+                </div>
+                <div>
+                    <i class="pi pi-trash"></i>
+                </div>
+    
+            </div>
+            <div class="title">
+                <label for="title">Title</label>
+                <input id="title" [value]="finding?.title" type="text" placeholder="Enter title">
+            </div>
+            <div class="severity-select">
+                <div class="select-container">
+                    <label for="severity">Severity</label>
+                <select name="severity" [value]="finding?.severity" id="severity">
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                </div>
+                <div class="select-container">
+                    <label for="type">Type</label>
+                <select name="type" id="type">
+                    <option *ngFor="let category of categories" [value]="category.id">
+                        {{ category.name }}
+                      </option>
+                </select>
+                </div>
+            </div>
+            <div class="description">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" [value]="finding?.description" cols="30" rows="10"></textarea>
+    
+            </div>
+    
+        </div><div class="findings-container" *ngFor="let finding of findings" >
+            <div class="finding-head">
+                <div class="labels">
+                    <div class="label-1">
+                        <span>Medium</span>
+                    </div>
+                    <div class="label-2">
+                        <span>Functional</span>
+                    </div>
+    
+                </div>
+                <div>
+                    <i class="pi pi-trash"></i>
+                </div>
+    
+            </div>
+            <div class="title">
+                <label for="title">Title</label>
+                <input id="title" [value]="finding?.title" type="text" placeholder="Enter title">
+            </div>
+            <div class="severity-select">
+                <div class="select-container">
+                    <label for="severity">Severity</label>
+                <select name="severity" [value]="finding?.severity" id="severity">
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                </div>
+                <div class="select-container">
+                    <label for="type">Type</label>
+                <select name="type" id="type">
+                    <option *ngFor="let category of categories" [value]="category.id">
+                        {{ category.name }}
+                      </option>
+                </select>
+                </div>
+            </div>
+            <div class="description">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" [value]="finding?.description" cols="30" rows="10"></textarea>
+    
+            </div>
+    
+        </div>
+        <button class="update-btn" style="margin-top: 70px;">
+            <i class="pi pi-plus"></i>
+            <span>View report</span>
+        </button>
+    </div>
+</div>
 
 </div>
+

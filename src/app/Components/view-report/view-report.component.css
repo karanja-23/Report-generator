@@ -2,19 +2,47 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    transition: all 0.5s ease;
+    padding-bottom: 60px;
 }
+.container.active {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99;
+    background-color: var(--sibasiGrey);
+    overflow: auto;
+    transition: all 0.3s ease;
+}
+.container::-webkit-scrollbar {
+    display: none; 
+  }
+  .doc{
+    background-color: whitesmoke;
+    width: 80%;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
 .cover{
     display: flex;
     align-self: center;
     align-items: center;
     justify-content: center;
-    width: 80%;
+    width: 85%;
     margin-top: 50px;
     border-radius: 10px;
-    background-color: var(--sibasiWhite);
-    box-shadow: 0px 0px 10px #7382a1;
-    padding: 20px;
+    padding: 20px 20px 40px 20px;
     box-sizing: border-box;
+   
 }
 .nav{
     position: sticky;
@@ -35,13 +63,15 @@
       
     align-self: center;
     margin-top: 20px;
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;   
-    
+    gap: 20px;       
     position: relative;
     color: #465268;
+    border: #465268 solid 1px;
+    border-radius: 10px;
+    box-sizing: border-box;
 
 }
 .head{
@@ -65,7 +95,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--sibasiGrey, #f8f9fa);
     color: #465268;
     width: 30px;
     height: 30px;
@@ -119,7 +148,7 @@
 }
 
 ::ng-deep .date-ng input{
-    background-color: var(--sibasiWhite) !important;
+    background-color: inherit !important;
     color: var(--text-color) !important;
     border: none !important;
 
@@ -258,10 +287,11 @@
 }
 .severity-item span{
     font-size: 0.99rem;
-    font-weight: 500;
+    font-weight: 600;
 }
 .severity-item i{
     font-size: 2.3rem;
+    
 }
 .maximize{
     
@@ -282,4 +312,183 @@
 
 .maximize:hover {
     transform: translateX(5px);
+}
+.findings{
+    width: 100%;
+    align-self: center;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;   
+    position: relative;
+    color: #465268;
+    padding: 11px 15px;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+
+}
+.add-btn{
+    background-color: var(--sibasiWhite);
+    border: none;
+    margin-top: 10px;
+    padding: 7px 19px;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    color: #465268;
+    align-items: center;
+    border-radius: 14px 28px 14px 28px;
+}
+.add-btn i{
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.add-btn span{
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+}
+.findings-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+   
+    padding: 20px;
+    border-left: 5px solid #7382a1;
+    margin-bottom: 40px;
+    border-bottom: #7382a1 solid 5px;
+}
+.findings{
+    width: 85%;
+   
+    padding: 20px;
+}
+.finding-head{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
+    margin-bottom: 10px;
+}
+.labels{
+    display: flex;    
+    gap: 20px;
+}
+.label-1, .label-2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: #465268 solid 1px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+}
+.label-1 span, .label-2 span{
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.label-1{
+    background-color: rgb(255, 233, 178);
+    color: rgb(126, 108, 7);
+    border: none;
+}
+.label-2{
+    background-color: rgb(241, 223, 223);
+    border: 1px solid var(--sibasiGrey);
+    color: #465268
+}
+.finding-head i{
+    color: var(--sibasiDanger);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.finding-head i:hover{
+    transform: translateY(5px);
+}
+.title{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0px 20px;
+}
+.title label{
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: 0.05rem;
+}
+.title input{
+    padding: 8px 10px;
+    border-radius: 5px;
+    border: 2px solid #7382a1;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.07rem;
+    color: #465268;
+    outline: none;
+    background-color: inherit;
+}
+.severity-select{
+    padding: 0px 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+.severity-select label{
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: 0.05rem;
+}
+.select-container{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.severity-select select{
+
+    padding: 8px 10px;
+    border-radius: 5px;
+    border: 2px solid #7382a1;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.07rem;
+    color: #465268;
+    outline: none;
+    background-color: inherit;
+}
+.description{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0px 20px;
+}
+.description label{
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: 0.05rem;
+}
+.description textarea{
+    padding: 8px 10px;
+    border-radius: 5px;
+    border: 2px solid #7382a1;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.07rem;
+    color: #465268;
+    outline: none;
+    background-color: inherit;
+    resize: none;
+    min-height: 100px;
 }
