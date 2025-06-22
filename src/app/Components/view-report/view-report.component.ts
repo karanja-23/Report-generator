@@ -5,6 +5,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProjectViewService } from '../../Services/project-view.service';
+
 @Component({
   selector: 'app-view-report',
   imports: [DatePickerModule,FormsModule, CommonModule],
@@ -18,7 +19,7 @@ export class ViewReportComponent implements OnInit {
     public projectViewService: ProjectViewService
   ) { }
   projectId: number = 0
-  project: any
+  project: any;
   date: any;
   expandReport: boolean = false
   findings: any = [];
@@ -34,7 +35,7 @@ export class ViewReportComponent implements OnInit {
     this.getCategories();
    }
    async getProjectById(id: number){
-    const response = await fetch(this.reportsService.url + 'get/project/' + id);
+    const response = await fetch(this.reportsService.myUrl + 'get/project/' + id);
     const data = await response.json();
     this.project = data;  
     this.date = new Date(this.project.created_date); 
@@ -53,7 +54,12 @@ export class ViewReportComponent implements OnInit {
     this.expandReport = this.projectViewService.toggleView();
   }
   async getFindings(){
-    console.log(this.project);
+    this.findings = [];
+    this.critical = 0;
+    this.high = 0;
+    this.medium = 0;
+    this.low = 0;
+
     this.project.categories.forEach((category: any) => {
 
       category.findings.forEach((finding: any) => {
@@ -70,7 +76,9 @@ export class ViewReportComponent implements OnInit {
           }
       
         this.findings.push(finding);
+
       })
+     
     })
  
   }

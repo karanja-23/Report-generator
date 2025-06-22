@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CreateProject } from '../Interfaces/create-project';
 
 @Injectable({
   providedIn: 'root'
@@ -6,21 +7,33 @@ import { Injectable } from '@angular/core';
 export class ReportsService {
 
   constructor() { }
-  url =` http://127.0.0.1:5000/`;
+
+  myUrl = `http://127.0.0.1:6060/`
 
   async getProjects(){
-    const response = await fetch(this.url + 'projects');
+    const response = await fetch(this.myUrl + 'projects');
     const data = await response.json();
     return data;
   }
   async getProjectById(id: number){
-    const response = await fetch(this.url + 'get/project/' + id);
+    const response = await fetch(this.myUrl + 'project/' + id);
     const data = await response.json();
     return data;
   }
   async getCategories(){
-    const response = await fetch(this.url + 'get/categories');
+    const response = await fetch(this.myUrl + 'get/categories');
     const data = await response.json();
     return data;
+  }
+  async createProject(project: CreateProject){  
+    const response = await fetch(this.myUrl + 'projects', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(project)      
+    })
+    .then(res => res.json());
+    return response['message'];
   }
 }
