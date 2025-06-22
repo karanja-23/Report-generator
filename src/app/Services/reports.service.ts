@@ -21,13 +21,24 @@ export class ReportsService {
     return data;
   }
   async getCategories(){
-    const response = await fetch(this.myUrl + 'get/categories');
+    const response = await fetch(this.myUrl + 'categories');
     const data = await response.json();
     return data;
   }
   async createProject(project: CreateProject){  
     const response = await fetch(this.myUrl + 'projects', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(project)      
+    })
+    .then(res => res.json());
+    return response['message'];
+  }
+  async editProject(project: {name: string, description: string}, id: number){
+    const response = await fetch(this.myUrl + 'project/' + id, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },

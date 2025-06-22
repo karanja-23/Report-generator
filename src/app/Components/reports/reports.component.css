@@ -319,22 +319,4 @@
     background-color: #465268 !important;
     color: var(--sibasiWhite) !important;
 }
-.editor-wrapper{
-    width: 98%;
-    min-height: 200px;
-    border-radius: 5px;
-    border: 2px solid #7382a1; 
-    overflow-y: scroll;  
-    text-align: left;
-   
-}
-.editor-wrapper::-webkit-scrollbar {
-    display: none;
-}
-.editor-container{
-    position: relative;    
-    height: inherit;
-    
-    
-    
-}
+

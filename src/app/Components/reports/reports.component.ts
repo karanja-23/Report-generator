@@ -11,9 +11,10 @@ import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { LoadingComponent } from '../loading/loading.component';
 @Component({
   selector: 'app-reports',
-  imports: [TableModule, CommonModule,FormsModule,RouterModule,DialogModule, ButtonModule, DatePickerModule, ToastModule],
+  imports: [TableModule, CommonModule,FormsModule,RouterModule,DialogModule, ButtonModule, DatePickerModule, ToastModule, LoadingComponent],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css',
   providers: [MessageService]
@@ -23,6 +24,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   filteredProjects: Projects[] = [];
   searchTerm:string = '';
   selectedProjectId: number | null = null;
+  isLoading: boolean = true;
   showAddModal: boolean = false;
   modalClass: string = 'modal';
   private isBrowser: boolean;
@@ -45,9 +47,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit(){
+    this.isLoading = true;
     this.projects = await this.reportsService.getProjects();
     this.filteredProjects = this.projects;
     this.projectViewService.setView(false);
+    this.isLoading = false;
     
   
   }
