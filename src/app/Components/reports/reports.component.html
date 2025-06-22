@@ -1,52 +1,87 @@
 <div class="container">
-       <div class="head">
-        <button class="create-btn">
-            <i class="pi pi-plus"></i>
-            <span>Create Report</span>
-        </button>
-        <div class="search">
-            <i class="pi pi-search"></i>
-            <input type="text" placeholder="Search ..."
-             (ngModelChange)="searchProjects($event)"
-             [(ngModel)]="searchTerm"
-            >            
-        </div>
-       </div>
-       <div class="table">
-        <p-table
-        [value]="filteredProjects"
-        [paginator]="filteredProjects && filteredProjects.length > 0"
-        [rows]="4"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        styleClass="white-table"
-        [rowsPerPageOptions]="[5, 10, 20]"
+  <div class="head">
+    <button class="create-btn" (click)="toggleAddModal()">
+      <i class="pi pi-plus"></i>
+      <span>Create Report</span>
+    </button>
+    <div class="search">
+      <i class="pi pi-search"></i>
+      <input
+        type="text"
+        placeholder="Search ..."
+        (ngModelChange)="searchProjects($event)"
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+  </div>
+  <div class="table">
+    <p-table
+      [value]="filteredProjects"
+      [paginator]="filteredProjects && filteredProjects.length > 0"
+      [rows]="4"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      styleClass="white-table"
+      [rowsPerPageOptions]="[5, 10, 20]"
     >
-        <ng-template #header>
-            <tr>
-                <th pSortableColumn="time" style="width:20%">
-                    Date Created <p-sortIcon field="time" />
-                </th>
-                <th pSortableColumn="name" style="width:20%">
-                    Name <p-sortIcon field="name" />
-                </th>
-                <th pSortableColumn="category" style="width:20%">
-                    Description <p-sortIcon field="category" />
-                </th>
-                <th pSortableColumn="quantity" style="width:20%">
-                     
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-project *ngIf="filteredProjects">
-            <tr (click)="onClickReport(project.id)">
-                <td>{{ project.created_date }}</td>
-                <td>{{ project.name }}</td>
-                <td>{{ project.description }}</td>
-                <td style="text-align: center;">
-                    <i  class="pi pi-ellipsis-v"></i>
-                </td>
-            </tr>
-        </ng-template>
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="time" style="width: 20%">
+            Date Created <p-sortIcon field="time" />
+          </th>
+          <th pSortableColumn="name" style="width: 20%">
+            Name <p-sortIcon field="name" />
+          </th>
+          <th pSortableColumn="category" style="width: 20%">
+            Description <p-sortIcon field="category" />
+          </th>
+          <th pSortableColumn="quantity" style="width: 20%"></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-project *ngIf="filteredProjects">
+        <tr (click)="onClickReport(project.id)">
+          <td>{{ project.created_at }}</td>
+          <td>{{ project.name }}</td>
+          <td>{{ project.description }}</td>
+          <td style="text-align: center">
+            <i class="pi pi-ellipsis-v"></i>
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
-       </div>
+  </div>
+  <div class="card flex justify-center" >
+
+    <p-dialog header="Create new report" [modal]="true"  [style]="{ width: '25rem',zIndex: '10000' }" [(visible)]="showAddModal" [closable]="true" [styleClass]="modalClass" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" (onMaximize)="onMaximizeChange($event)" (onHide)="handleMinimize()" >
+      <div class="form">
+        <div class="inputs">
+          <label for="name">Name</label>
+          <input [(ngModel)]="reportName" type="text" pInputText id="name"  />
+        </div>
+        <div class="inputs">
+          <label for="date">Date created</label>
+          <p-datepicker  [styleClass]="'date-ng'"   [(ngModel)]="reportCreatedAt" [showIcon]="true" inputId="buttondisplay" [showOnFocus]="false" />
+        </div>
+        <div class="inputs">
+          <label  for="description">Description</label>
+          <div class="editor-wrapper" style="text-align: left;" >
+            <div id="editorjs" class="editor-container" style="text-align: left;"></div>
+          </div>
+        </div>
+        <div class="btns" style="gap: 20px; margin-top: 30px; width: 98%; justify-content: flex-end; ">
+          <button class="create-btn" (click)="handleCreateNewProject()">
+            <i class="pi pi-plus"></i>
+            <span>Create new</span>
+          </button>
+          <button class="create-btn" >
+            <i class="pi pi-times"></i>
+            <span>Cancel</span>
+          </button>
+        </div>
+       
+      </div>
+        
+    </p-dialog>
 </div>
+</div>
+<p-toast />
+

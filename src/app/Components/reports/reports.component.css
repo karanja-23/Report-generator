@@ -134,7 +134,9 @@
     border-bottom: 1px solid #d0d0d0 !important;
 }
 
-::ng-deep .white-table .p-datatable-thead > tr > th {
+::ng-deep .white-table .p-datatable-thead > tr > th ,
+::ng-deep .white-table .p-datatable-thead > tr > th:hover
+{
     background-color: white !important;
     color: var(--text-color);
     border-bottom: 1px solid #d0d0d0 !important;
@@ -169,3 +171,170 @@
     display: none !important;
 }
 
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px
+}
+.inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 5px
+}
+::ng-deep .modal {
+    background-color: var(--sibasiWhite) !important;
+    color: #465268 !important;
+    min-width: 920px !important;
+    min-height: 560px !important;
+    padding: 0px 20px !important;
+    box-sizing: border-box !important;
+}
+.btns{
+    display: flex;
+}
+
+::ng-deep .modal .btn-1,
+::ng-deep .modal .btn-2{
+    background-color: #465268;
+    border: none;
+    padding: 7px 19px;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    color: var(--sibasiWhite);
+    align-items: center;
+    border-radius: 14px 28px 14px 28px;
+
+}
+
+::ng-deep .date-ng{
+    width: 98% !important;
+    border: none !important;
+    border-radius: 5px !important;
+    border: 2px solid #7382a1 !important;
+}
+
+::ng-deep .date-ng input{
+    background-color: inherit !important;
+    color: var(--text-color) !important;
+    border: none !important;
+
+}
+::ng-deep .date-ng button{
+    background-color: #465268 !important;
+    color: var(--sibasiWhite) !important;
+    border: none !important;
+}
+::ng-deep .date-ng input:focus{
+    outline: none !important;
+}
+::ng-deep .date-ng .p-datepicker {
+    padding: 0px !important;
+    background: var(--sibasiWhite) !important;
+    background-color: var(--sibasiWhite) !important;
+    border: none !important;
+}
+::ng-deep .date-ng .p-datepicker-panel{
+    background-color: var(--sibasiWhite) !important;
+    color: #465268;
+}
+
+
+::ng-deep .date-ng .p-datepicker-header {
+    background-color: var(--sibasiWhite) !important;
+    color: var(--text-color) !important;
+    padding: 12px 16px !important;
+}
+::ng-deep .date-ng .p-datepicker-title {
+    color: var(--text-color) !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+::ng-deep .date-ng .p-datepicker-calendar {
+    background-color: var(--sibasiWhite) !important;
+    width: 100% !important;
+    color: #465268;
+}
+::ng-deep .date-ng .p-datepicker-calendar thead  {
+    background-color: var(--sibasiWhite) !important;
+    color: var(--text-color) !important;
+    font-weight: 600 !important;
+    padding: 8px !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    opacity: 0.7 !important;
+}
+::ng-deep .date-ng .p-datepicker-calendar tbody td {
+    background-color: var(--sibasiWhite) !important;
+    padding: 2px !important;
+    text-align: center !important;
+    color: #465268 !important;
+}
+::ng-deep .date-ng .p-datepicker-calendar tbody td > span {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    color: var(--text-color) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    background-color: transparent !important;
+}
+::ng-deep .date-ng span{
+    color: #465268 !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+::ng-deep .date-ng .p-datepicker-calendar tbody td > span.p-highlight {
+    background-color: var(--sibasiWhite) !important;
+    color: var(--text-color) !important
+}
+
+::ng-deep .modal label{
+    font-weight: 600;
+    font-size: 1.02rem;
+}
+
+::ng-deep .modal input, textarea{
+    width: 98%;
+    padding: 11px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    color: #465268;
+    border: 2px solid #7382a1;
+    transition: all 0.3s ease;
+}
+::ng-deep .modal textarea{
+    min-height: 200px;
+}
+::ng-deep .modal input:focus, textarea:focus{
+    transform: translateX(2px);
+   
+}
+::ng-deep .modal .p-dialog-header button:hover{
+    background-color: #465268 !important;
+    color: var(--sibasiWhite) !important;
+}
+.editor-wrapper{
+    width: 98%;
+    min-height: 200px;
+    border-radius: 5px;
+    border: 2px solid #7382a1; 
+    overflow-y: scroll;  
+    text-align: left;
+   
+}
+.editor-wrapper::-webkit-scrollbar {
+    display: none;
+}
+.editor-container{
+    position: relative;    
+    height: inherit;
+    
+    
+    
+}

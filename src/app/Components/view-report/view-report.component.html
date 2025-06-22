@@ -128,58 +128,15 @@
     
             </div>
     
-        </div><div class="findings-container" *ngFor="let finding of findings" >
-            <div class="finding-head">
-                <div class="labels">
-                    <div class="label-1">
-                        <span>Medium</span>
-                    </div>
-                    <div class="label-2">
-                        <span>Functional</span>
-                    </div>
-    
-                </div>
-                <div>
-                    <i class="pi pi-trash"></i>
-                </div>
-    
-            </div>
-            <div class="title">
-                <label for="title">Title</label>
-                <input id="title" [value]="finding?.title" type="text" placeholder="Enter title">
-            </div>
-            <div class="severity-select">
-                <div class="select-container">
-                    <label for="severity">Severity</label>
-                <select name="severity" [value]="finding?.severity" id="severity">
-                    <option value="Critical">Critical</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
-                </select>
-                </div>
-                <div class="select-container">
-                    <label for="type">Type</label>
-                <select name="type" id="type">
-                    <option *ngFor="let category of categories" [value]="category.id">
-                        {{ category.name }}
-                      </option>
-                </select>
-                </div>
-            </div>
-            <div class="description">
-                <label for="description">Description</label>
-                <textarea name="description" id="description" [value]="finding?.description" cols="30" rows="10"></textarea>
-    
-            </div>
-    
         </div>
+        
         <button class="update-btn" style="margin-top: 70px;">
             <i class="pi pi-plus"></i>
             <span>View report</span>
         </button>
     </div>
 </div>
+
 
 </div>
 
