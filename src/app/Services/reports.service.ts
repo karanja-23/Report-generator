@@ -21,7 +21,7 @@ export class ReportsService {
     return data;
   }
   async getCategories(){
-    const response = await fetch(this.myUrl + 'get/categories');
+    const response = await fetch(this.myUrl + 'categories');
     const data = await response.json();
     return data;
   }
@@ -32,6 +32,33 @@ export class ReportsService {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(project)      
+    })
+    .then(res => res.json());
+    return response['message'];
+  }
+  async editProject(project: {name: string, description: string}, id: number){
+    const response = await fetch(this.myUrl + 'project/' + id, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(project)      
+    })
+    .then(res => res.json());
+    return response['message'];
+  }
+  async getSeverities(){
+    const response = await fetch(this.myUrl + 'severities');
+    const data = await response.json();
+    return data;
+  }
+  async postFinding(finding: any){
+    const response = await fetch(this.myUrl + 'findings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(finding)      
     })
     .then(res => res.json());
     return response['message'];

@@ -11,9 +11,11 @@ import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { LoadingComponent } from '../loading/loading.component';
+import { table } from 'console';
 @Component({
   selector: 'app-reports',
-  imports: [TableModule, CommonModule,FormsModule,RouterModule,DialogModule, ButtonModule, DatePickerModule, ToastModule],
+  imports: [TableModule, CommonModule,FormsModule,RouterModule,DialogModule, ButtonModule, DatePickerModule, ToastModule, LoadingComponent],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css',
   providers: [MessageService]
@@ -23,6 +25,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   filteredProjects: Projects[] = [];
   searchTerm:string = '';
   selectedProjectId: number | null = null;
+  isLoading: boolean = true;
   showAddModal: boolean = false;
   modalClass: string = 'modal';
   private isBrowser: boolean;
@@ -45,9 +48,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit(){
+    this.isLoading = true;
     this.projects = await this.reportsService.getProjects();
     this.filteredProjects = this.projects;
     this.projectViewService.setView(false);
+    this.isLoading = false;
     
   
   }
@@ -100,6 +105,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.projectViewService.setView(false);
   }
 
+
   async handleCreateNewProject(){
     const editorData = await this.editor.save();
 
@@ -128,7 +134,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         Quote,
         Delimiter,
         CodeTool,
-        Underline
+        Underline,
+        TableModule,
       ] = await Promise.all([
         import('@editorjs/editorjs'),
         import('@editorjs/inline-code'),
@@ -137,7 +144,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         import('@editorjs/quote'),
         import('@editorjs/delimiter'),
         import('@editorjs/code'),
-        import('@editorjs/underline')
+        import('@editorjs/underline'),
+        import('@editorjs/table'),
       ]);
   
       this.editor = new EditorJS.default({
@@ -206,6 +214,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           underline: {
             class: Underline.default,
             shortcut: 'CMD+U'
+          },
+          table: {
+            class: TableModule.default as any,
+            config: {
+              rows: 2,
+              cols: 2,
+            },
           }
         },
         
