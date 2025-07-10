@@ -12,6 +12,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { LoadingComponent } from '../loading/loading.component';
+import { table } from 'console';
 @Component({
   selector: 'app-reports',
   imports: [TableModule, CommonModule,FormsModule,RouterModule,DialogModule, ButtonModule, DatePickerModule, ToastModule, LoadingComponent],
@@ -104,6 +105,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.projectViewService.setView(false);
   }
 
+
   async handleCreateNewProject(){
     const editorData = await this.editor.save();
 
@@ -132,7 +134,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         Quote,
         Delimiter,
         CodeTool,
-        Underline
+        Underline,
+        TableModule,
       ] = await Promise.all([
         import('@editorjs/editorjs'),
         import('@editorjs/inline-code'),
@@ -141,7 +144,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         import('@editorjs/quote'),
         import('@editorjs/delimiter'),
         import('@editorjs/code'),
-        import('@editorjs/underline')
+        import('@editorjs/underline'),
+        import('@editorjs/table'),
       ]);
   
       this.editor = new EditorJS.default({
@@ -210,6 +214,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           underline: {
             class: Underline.default,
             shortcut: 'CMD+U'
+          },
+          table: {
+            class: TableModule.default as any,
+            config: {
+              rows: 2,
+              cols: 2,
+            },
           }
         },
         

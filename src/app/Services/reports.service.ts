@@ -47,4 +47,20 @@ export class ReportsService {
     .then(res => res.json());
     return response['message'];
   }
+  async getSeverities(){
+    const response = await fetch(this.myUrl + 'severities');
+    const data = await response.json();
+    return data;
+  }
+  async postFinding(finding: any){
+    const response = await fetch(this.myUrl + 'findings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(finding)      
+    })
+    .then(res => res.json());
+    return response['message'];
+  }
 }

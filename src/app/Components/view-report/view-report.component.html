@@ -103,121 +103,135 @@
       <div class="findings">
         <div class="head">
           <span>Findings</span>
-          <button class="add-btn">
+          <!-- Updated Add finding button with click handler -->
+          <button class="add-btn" (click)="showAddFindingForm()">
             <i class="pi pi-plus"></i>
             <span>Add finding</span>
           </button>
         </div>
         <div>
-            <div class="findings-container" *ngFor="let finding of project?.findings; let i = index">
-                <div class="finding-head">
-                    <div class="labels">
-                        <div class="label-1">
-                            <span>{{finding?.severity || 'Medium'}}</span>
-                        </div>
-                        <div class="label-2">
-                            <span>Functional</span> 
-                        </div>
-                    </div>
-                    <div>
-                        <i class="pi pi-trash"></i>
-                    </div>
+          <!-- New finding form at the top - only show when showNewFindingForm is true -->
+          <div *ngIf="showNewFindingForm" class="findings-container" style="border: 2px solid #007bff; background-color: #f8f9fa;">
+            <div class="finding-head">
+              <div class="labels">
+                <div class="label-1" style="background-color: #007bff; color: white;">
+                  <span>New Finding</span>
                 </div>
-                
-                <div class="title">
-                    <label for="title-{{i}}">Title</label>
-                    <input id="title-{{i}}" [value]="finding?.title" type="text" placeholder="Enter title">
-                </div>
-                
-                <div class="severity-select">
-                    <div class="select-container">
-                        <label for="severity-{{i}}">Severity</label>
-                        <select name="severity" [value]="finding?.severity" id="severity-{{i}}">
-                            <option value="Critical">Critical</option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                        </select>
-                    </div>
-                    <div class="select-container">
-                        <label for="type-{{i}}">Type</label>
-                        <select name="type" id="type-{{i}}">
-                            <option *ngFor="let category of categories" [value]="category.id">
-                                {{ category.name }}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="description">
-                    <label for="finding-description-{{i}}">Description</label>
-                    <!-- Each finding gets its own editor -->
-                    <div class="editor-wrapper" style="text-align: left;">
-                        <div id="finding-description-{{i}}" class="editor-container" style="text-align: left;"></div>
-                    </div>
-                </div>
+              </div>
+              <div>
+                <i class="pi pi-times" (click)="cancelNewFinding()" style="cursor: pointer; color: #dc3545; font-size: 1.2em;"></i>
+              </div>
             </div>
-          <div *ngIf="!project?.findings || project?.findings.length === 0">
-            <div class="findings-container">
+            
+            <div class="title">
+              <label for="title-new">Title</label>
+              <input id="title-new" [(ngModel)]="newFinding.title" type="text" placeholder="Enter finding title" />
+            </div>
+            
+            <div class="severity-select">
+              <div class="select-container">
+                <label for="severity-new">Severity</label>
+                <select name="severity" id="severity-new" [(ngModel)]="newFinding.severity_id">
+                  <option [ngValue]="null">Select severity</option>
+                  <option *ngFor="let severity of severities" [ngValue]="severity.id">
+                    {{ severity.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="select-container">
+                <label for="type-new">Category</label>
+                <select name="type" id="type-new" [(ngModel)]="newFinding.category_id">
+                  <option [ngValue]="null">Select category</option>
+                  <option *ngFor="let category of categories" [ngValue]="category.id">
+                    {{ category.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="description">
+              <label for="finding-description-new">Description</label>
+              <div class="editor-wrapper" style="text-align: left;">
+                <div id="finding-description-new" class="editor-container" style="text-align: left;"></div>
+              </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+              <button class="update-btn" (click)="addNewFinding()" style="background-color: #28a745;">
+                <i class="pi pi-save"></i>
+                <span>Save Finding</span>
+              </button>
+              <button class="update-btn" (click)="cancelNewFinding()" style="background-color: #6c757d;">
+                <i class="pi pi-times"></i>
+                <span>Cancel</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Existing findings -->
+          <div *ngIf="project?.findings && project?.findings.length > 0">
+            <div class="findings-container" *ngFor="let finding of project?.findings; let i = index">
               <div class="finding-head">
                 <div class="labels">
                   <div class="label-1">
-                    <span>Medium</span>
+                    <span>{{finding?.severity.name || 'Medium'}}</span>
                   </div>
                   <div class="label-2">
-                    <span>Functional</span>
+                    <span>{{finding?.category.name || 'Functional'}}</span> 
                   </div>
                 </div>
                 <div>
                   <i class="pi pi-trash"></i>
                 </div>
               </div>
+              
               <div class="title">
-                <label for="title-empty">Title</label>
-                <input id="title-empty" type="text" placeholder="Enter title" />
+                <label for="title-{{i}}">Title</label>
+                <input id="title-{{i}}" [value]="finding?.title" type="text" placeholder="Enter title">
               </div>
+              
               <div class="severity-select">
                 <div class="select-container">
-                  <label for="severity-empty">Severity</label>
-                  <select name="severity" id="severity-empty">
-                    <option value="">Select severity</option>
-                    <option value="Critical">Critical</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
+                  <label for="severity-{{i}}">Severity</label>
+                  <select name="severity" id="severity-{{i}}" [(ngModel)]="finding.severity.id">
+                    <option [ngValue]="null" selected>Select severity</option>
+                    <option *ngFor="let severity of severities" [ngValue]="severity.id" 
+                            [selected]="severity.id === finding.severity_id">
+                      {{ severity.name }}
+                    </option>
                   </select>
                 </div>
                 <div class="select-container">
-                  <label for="type-empty">Category</label>
-                  <select name="type" id="type-empty">
-                    <option value="">Select category</option>
-                    <option
-                      *ngFor="let category of categories"
-                      [value]="category.id"
-                    >
+                  <label for="type-{{i}}">Type</label>
+                  <select name="type" id="type-{{i}}" [(ngModel)]="finding.category.id">
+                    <option [ngValue]="null">Select category</option>
+                    <option *ngFor="let category of categories" [ngValue]="category.id"
+                            [selected]="category.id === finding.category_id">
                       {{ category.name }}
                     </option>
                   </select>
                 </div>
               </div>
+              
               <div class="description">
-                <label for="finding-description-empty">Description</label>
+                <label for="finding-description-{{i}}">Description</label>
                 <div class="editor-wrapper" style="text-align: left;">
-                    <div id="finding-description-empty" class="editor-container" style="text-align: left;"></div>
+                  <div id="finding-description-{{i}}" class="editor-container" style="text-align: left;"></div>
                 </div>
               </div>
-              <button class="update-btn" style="margin-top: 70px; width: fit-content;">
-                <i class="pi pi-save"></i>
-                <span>Save finding</span>
-              </button>
             </div>
+          </div>
 
-            
+         
+          <div *ngIf="(!project?.findings || project?.findings.length === 0) && !showNewFindingForm" class="no-findings" style="text-align: center; padding: 40px; color: #6c757d;">
+            <i class="pi pi-info-circle" style="font-size: 3em; margin-bottom: 20px;"></i>
+            <p style="font-size: 1.2em; margin: 0;">No findings yet.</p>
+            <p style="margin: 10px 0 0 0;">Click "Add finding" to create your first finding.</p>
           </div>
         </div>
       </div>
 
-      <button class="update-btn" style="margin-top: 70px">
+      <button class="update-btn" style="margin-top: 70px" (click)="generatePDF()">
         <i class="pi pi-plus"></i>
         <span>View report</span>
       </button>
