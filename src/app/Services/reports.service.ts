@@ -63,4 +63,24 @@ export class ReportsService {
     .then(res => res.json());
     return response['message'];
   }
+  async editProjectDetails(project: {name: string, description: JSON}, id: number){
+    console.log('hi')
+    const response = await fetch(this.myUrl + 'project/' + id, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(project)      
+    })
+    .then(res => res.json());
+    
+    return response['message'];
+  }
+  async deleteProject(id: number){
+    const response = await fetch(this.myUrl + 'project/' + id, {
+      method: 'DELETE'
+    })
+    .then(res => res.json());
+    return response['message'];
+  }
 }

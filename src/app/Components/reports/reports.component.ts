@@ -1,4 +1,4 @@
-import { Component, OnInit,PLATFORM_ID,Inject,AfterViewInit } from '@angular/core';
+import { Component, OnInit,PLATFORM_ID,Inject,AfterViewInit,OnDestroy } from '@angular/core';
 import { ReportsService } from '../../Services/reports.service';
 import { Projects } from '../../Interfaces/projects';
 import { TableModule } from 'primeng/table';
@@ -20,7 +20,7 @@ import { table } from 'console';
   styleUrl: './reports.component.css',
   providers: [MessageService]
 })
-export class ReportsComponent implements OnInit, AfterViewInit {
+export class ReportsComponent implements OnInit, OnDestroy {
   projects: Projects[] = [];
   filteredProjects: Projects[] = [];
   searchTerm:string = '';
@@ -56,17 +56,17 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     
   
   }
-  async ngAfterViewInit() {
-    
+  
+  ngOnDestroy(): void {
+    this.projectViewService.setRenderingAuthpage(false);
   }
   searchProjects(searchValue: string) {
     if (!searchValue || searchValue.trim() === '') {
       this.filteredProjects = this.projects;
     } else {
       this.filteredProjects = this.projects.filter(project => 
-        project.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        project.description.toLowerCase().includes(searchValue.toLowerCase()) ||
-        project.created_date.toLowerCase().includes(searchValue.toLowerCase())
+        (project.name.toLowerCase() ??'').includes(searchValue.toLowerCase()) ||
+        (project.created_at.toLowerCase() ??'').includes(searchValue.toLowerCase())
       );
     }
   }

@@ -509,3 +509,52 @@
 .codex-editor__redactor {
     padding-bottom: 0px !important;
   }
+  .doc{
+    position: relative;
+  }
+#delete{
+    position: absolute;
+    top: 0px;
+    right: 40px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 2.5rem;
+    color: var(--sibasiDanger);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#delete:hover{
+    transform: translateY(2px);
+  }
+  
+  .delete-confirmation{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: rgb(255, 200, 209);
+    color: var(--text-color);
+    border-radius: 10px;
+    width: 400px;
+    position: absolute;
+    top: 45px;
+    right: 35px;
+    z-index: 9999;
+    box-sizing: border-box;
+    font-weight: 100;
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+  }
+#download{
+    position: absolute;
+    top: 0px;
+    right: 90px;
+    font-size: 1.8rem;
+    color: #465268;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
