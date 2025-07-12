@@ -7,12 +7,16 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ProjectViewService } from '../../Services/project-view.service';
 import { LoadingComponent } from '../loading/loading.component';
 import { PdfGeneratorService } from '../../Services/pdf-generator.service';
-
+import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-view-report',
-  imports: [DatePickerModule, FormsModule, CommonModule, LoadingComponent],
+  imports: [DatePickerModule, FormsModule, CommonModule, LoadingComponent, ToastModule,ButtonModule],
   templateUrl: './view-report.component.html',
-  styleUrl: './view-report.component.css'
+  styleUrl: './view-report.component.css',
+  providers: [MessageService]
 })
 export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
   editors: { [key: string]: any } = {};
@@ -22,11 +26,13 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
   editorInitialized: boolean = false;
   description: any;
   showNewFindingForm: boolean = false;
-
+  showDeleteConfirmation: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private reportsService: ReportsService,
     public projectViewService: ProjectViewService,
+    private messageService: MessageService,
+    private router: Router,
     @Inject(PLATFORM_ID) private platformId: any,
     private pdfGeneratorService: PdfGeneratorService
   ) {
@@ -43,6 +49,7 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
   low: number = 0;
   critical: number = 0;
   severities: any = [];
+  editProjectMessage: string = '';
   newFinding: any = {
     title: '',
     description: '',
@@ -63,8 +70,6 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
   async ngAfterViewInit(): Promise<void> {
     if (this.isBrowser) {
       setTimeout(async () => {
-        console.log('Project data:', this.project);
-        console.log('Findings:', this.project?.findings);
         
         await this.initializeEditor('project-description', this.description);
   
@@ -248,7 +253,27 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     window.history.back();
   }
-
+  async getUpdatedDescription(editorId: string): Promise<string> {
+    try {
+      // Check if editor exists for this ID
+      if (!this.editors[editorId]) {
+        console.warn(`Editor not found for ${editorId}`);
+        return '';
+      }
+  
+      const editor = this.editors[editorId];
+      
+      // Get the editor data
+      const outputData = await editor.save();
+      
+      // Convert EditorJS data to JSON string for storage
+      return JSON.stringify(outputData);
+      
+    } catch (error) {
+      console.error(`Failed to get updated description for ${editorId}:`, error);
+      return '';
+    }
+  }
   toggle(): void {
     this.expandReport = this.projectViewService.toggleView();
   }
@@ -475,4 +500,44 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.editors = {};
   }
+  async editProjectDetails(): Promise<void> {
+    const updatedDescription = this.getUpdatedDescription('project-description');
+    this.project.description = await updatedDescription;
+    this.editProjectMessage = await this.reportsService.editProjectDetails({name: this.project.name, description: this.project.description}, this.project.id);
+    this.showSuccess();
+  }
+  showSuccess() {
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: this.editProjectMessage, life: 5000 });
+  }
+  showError() {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: this.editProjectMessage, life: 5000 });
+  }
+  showConfirmation() {
+    this.showDeleteConfirmation = true;
+  }
+  hideDeleteConfirmation() {
+    this.showDeleteConfirmation = false;
+  }
+  async handleDeleteProject() {
+    this.showDeleteConfirmation = false;
+    this.isLoading = true;
+    try{
+      this.editProjectMessage = await this.reportsService.deleteProject(this.project.id);
+      this.isLoading = false;      
+      this.showSuccess();
+      setTimeout(() => {
+        this.router.navigate(['/reports']);
+      }, 2000);
+     
+    }
+    catch(error){
+      console.error('Error deleting project:', error);
+      this.editProjectMessage = 'Error deleting project';
+      this.showError();
+    }
+    
+    
+    
+  }
+    
 }

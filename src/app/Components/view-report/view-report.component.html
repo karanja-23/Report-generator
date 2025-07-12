@@ -23,8 +23,32 @@
     </div>
   </div>
   <div class="doc">
+    <div id="delete" (click)="showConfirmation()">
+      <i  class="pi pi-trash"></i> 
+    </div>
+    <div *ngIf="showDeleteConfirmation" class="delete-confirmation">
+      <i class="pi pi-times" (click)="hideDeleteConfirmation()" style="cursor: pointer; position: absolute; top: 15px; right: 15px; font-size: 0.8rem;"></i>
+      <div style="display: flex;  gap: 5px">
+        <i class="pi pi-exclamation-triangle"></i>
+        <span>Confirm delete</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 5px">
+        <span>Are you sure you want to delete this report?</span>
+        <span>This action cannot be undone.</span>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px">
+        <button class="update-btn" (click)="hideDeleteConfirmation()">Cancel</button>
+        <button class="update-btn" (click)="handleDeleteProject()">Delete</button>
+      </div>
+    </div>
+    <div id="download">
+      <i class="pi pi-download" id="download_report" (click)="generatePDF()"></i>
+    </div>
     <div class="cover">
+      
       <div class="project-details">
+        
+        
         <div class="head">
           <span>Project Information</span>
         </div>
@@ -54,7 +78,7 @@
               ></div>
             </div>
             <div>
-              <button class="update-btn">
+              <button class="update-btn" (click)="editProjectDetails()">
                 <i class="pi pi-pencil"></i>
                 <span>Edit details</span>
               </button>
@@ -111,15 +135,15 @@
         </div>
         <div>
           <!-- New finding form at the top - only show when showNewFindingForm is true -->
-          <div *ngIf="showNewFindingForm" class="findings-container" style="border: 2px solid #007bff; background-color: #f8f9fa;">
+          <div *ngIf="showNewFindingForm" class="findings-container" style="border: 2px solid #7382a1; background-color: #f8f9fa;">
             <div class="finding-head">
               <div class="labels">
-                <div class="label-1" style="background-color: #007bff; color: white;">
+                <div class="label-1" style="background-color: #465268; color: var(--sibasiWhite)">
                   <span>New Finding</span>
                 </div>
               </div>
               <div>
-                <i class="pi pi-times" (click)="cancelNewFinding()" style="cursor: pointer; color: #dc3545; font-size: 1.2em;"></i>
+                <i class="pi pi-times" (click)="cancelNewFinding()" style="cursor: pointer; color: var(--sibasiDanger); font-size: 1.2em;"></i>
               </div>
             </div>
             
@@ -157,16 +181,17 @@
             </div>
             
             <div style="display: flex; gap: 10px; margin-top: 20px;">
-              <button class="update-btn" (click)="addNewFinding()" style="background-color: #28a745;">
+              <button class="update-btn" (click)="addNewFinding()" style="background-color: #465268;">
                 <i class="pi pi-save"></i>
                 <span>Save Finding</span>
               </button>
-              <button class="update-btn" (click)="cancelNewFinding()" style="background-color: #6c757d;">
+              <button class="update-btn" (click)="cancelNewFinding()" style="background-color: #465268;">
                 <i class="pi pi-times"></i>
                 <span>Cancel</span>
               </button>
             </div>
           </div>
+          
 
           <!-- Existing findings -->
           <div *ngIf="project?.findings && project?.findings.length > 0">
@@ -219,6 +244,12 @@
                   <div id="finding-description-{{i}}" class="editor-container" style="text-align: left;"></div>
                 </div>
               </div>
+              <div>
+                <button class="update-btn">
+                  <i class="pi pi-save"></i>
+                  <span>Update Finding</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -231,12 +262,10 @@
         </div>
       </div>
 
-      <button class="update-btn" style="margin-top: 70px" (click)="generatePDF()">
-        <i class="pi pi-plus"></i>
-        <span>View report</span>
-      </button>
+      
     </div>
   </div>
-
+  <p-toast />
   <app-loading *ngIf="isLoading"></app-loading>
 </div>
+

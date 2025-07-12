@@ -85,7 +85,7 @@
     background-color: white !important;
     color: var(--text-color);
     margin-bottom: 10px;
-    height: 390px;
+    height: 490px;
        
 }
 ::ng-deep .white-table ::-webkit-scrollbar {
@@ -157,14 +157,20 @@
     color: var(--text-color);
     border: none;
   }
-  ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background-color: var(--sibasiWhite);
-    color: var(--text-color);
+ 
+  ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight,
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-paginator-page-selected {
+    background-color: var(--text-color) !important;
+    color: var(--sibasiWhite)   !important;
     font-weight: bold;
-    border-radius: 8px;
-  }
+    
+}
   ::ng-deep .p-paginator .p-paginator-prev,
 ::ng-deep .p-paginator .p-paginator-next {
+  color: var(--text-color);
+}
+::ng-deep .p-paginator .p-paginator-prev,
+::ng-deep .p-paginator .p-paginator-next:hover {
   color: var(--text-color);
 }
 ::ng-deep .p-paginator-rpp-dropdown{
@@ -320,3 +326,8 @@
     color: var(--sibasiWhite) !important;
 }
 
+.create-btn:hover{
+    background-color: #2d3647 !important;
+    color: var(--sibasiWhite) !important;
+    transform: translateY(-2px);
+}

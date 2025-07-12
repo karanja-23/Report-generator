@@ -18,7 +18,7 @@
     <p-table
       [value]="filteredProjects"
       [paginator]="filteredProjects && filteredProjects.length > 0"
-      [rows]="4"
+      [rows]="7"
       [tableStyle]="{ 'min-width': '50rem' }"
       styleClass="white-table"
       [rowsPerPageOptions]="[5, 10, 20]"
@@ -32,7 +32,7 @@
             Name <p-sortIcon field="name" />
           </th>
           <th pSortableColumn="category" style="width: 20%">
-            Description <p-sortIcon field="category" />
+            Number of Findings <p-sortIcon field="category" />
           </th>
           <th pSortableColumn="quantity" style="width: 20%"></th>
         </tr>
@@ -41,9 +41,9 @@
         <tr (click)="onClickReport(project.id)">
           <td>{{ project.created_at }}</td>
           <td>{{ project.name }}</td>
-          <td>{{ project.description }}</td>
+          <td style="padding-left: 6%;">{{ project.findings.length }}</td>
           <td style="text-align: center">
-            <i class="pi pi-ellipsis-v"></i>
+            <i class="pi pi-angle-double-right"></i>
           </td>
         </tr>
       </ng-template>
@@ -72,10 +72,7 @@
             <i class="pi pi-plus"></i>
             <span>Create new</span>
           </button>
-          <button class="create-btn" >
-            <i class="pi pi-times"></i>
-            <span>Cancel</span>
-          </button>
+          
         </div>
        
       </div>

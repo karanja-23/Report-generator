@@ -7,6 +7,7 @@ export class ProjectViewService {
 
   constructor() { }
   expandReport: boolean = false;
+  isRenderingAuthpage: boolean = false
 
   toggleView(){
     this.expandReport = !this.expandReport;
@@ -16,4 +17,8 @@ export class ProjectViewService {
     this.expandReport = view;
     return this.expandReport;
   }
+  setRenderingAuthpage(view: boolean){
+    this.isRenderingAuthpage = view;    
+  }
 }
+  
