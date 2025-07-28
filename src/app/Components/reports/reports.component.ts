@@ -12,10 +12,11 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { LoadingComponent } from '../loading/loading.component';
-import { table } from 'console';
+import { PaginatorModule } from 'primeng/paginator';
+
 @Component({
   selector: 'app-reports',
-  imports: [TableModule, CommonModule,FormsModule,RouterModule,DialogModule, ButtonModule, DatePickerModule, ToastModule, LoadingComponent],
+  imports: [TableModule, CommonModule,FormsModule,RouterModule,DialogModule, ButtonModule, DatePickerModule, ToastModule, LoadingComponent, PaginatorModule],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css',
   providers: [MessageService]
@@ -31,6 +32,12 @@ export class ReportsComponent implements OnInit, OnDestroy {
   private isBrowser: boolean;
   editor!: any;
   private editorInitialized: boolean = false;
+  currentView: 'list' | 'grid' = 'list';
+  
+  first=0;
+  rows=6
+  totalRecords=0
+  paginatedProjects:any[]=[]
 
   reportName: string = '';
   reportDescription: string = '';
@@ -48,18 +55,31 @@ export class ReportsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(){
+    this.projectViewService.setView(false);
     this.isLoading = true;
     this.projects = await this.reportsService.getProjects();
     this.filteredProjects = this.projects;
     this.projectViewService.setView(false);
     this.isLoading = false;
-    
+    this.updatePaginatedData();
   
   }
-  
+  updatePaginatedData() {
+    this.totalRecords = this.filteredProjects.length;
+    this.paginatedProjects = this.filteredProjects.slice(this.first, this.first + this.rows);
+  }
   ngOnDestroy(): void {
     this.projectViewService.setRenderingAuthpage(false);
   }
+  setView(view: 'list' | 'grid') {
+    this.currentView = view;
+
+}
+onPageChange(event: any) {
+  this.first = event.first;
+  this.rows = event.rows;
+  this.updatePaginatedData();
+}
   searchProjects(searchValue: string) {
     if (!searchValue || searchValue.trim() === '') {
       this.filteredProjects = this.projects;

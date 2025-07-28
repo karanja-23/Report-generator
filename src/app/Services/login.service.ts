@@ -22,4 +22,40 @@ export class LoginService {
     .then(res => res.json());
     return response;
   }
+  async getProtectedUser(token: string){
+    const response = await fetch(this.url + '/protected', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(res => res.json());
+    console.log(response)
+    return response;
+  }
+  getToken(): string | null {
+    if (typeof window !== 'undefined' && localStorage !== undefined) {
+      const stored = localStorage.getItem('token');
+      if (stored && stored !== 'undefined') {
+        try {
+          const parsed = JSON.parse(stored);
+         return parsed['access_token'] ?? null;
+        } catch {
+          return null;
+        }
+      }
+    
+    }
+    return null;
+    
+  }
+  
+  checkLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+  async logout() {
+    localStorage.removeItem('token');
+    this.isLoggedIn = false;
+  }
 }

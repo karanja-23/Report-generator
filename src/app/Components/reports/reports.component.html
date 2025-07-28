@@ -1,24 +1,34 @@
-<div class="container">
+<div class="container" >
   <div class="head">
     <button class="create-btn" (click)="toggleAddModal()">
       <i class="pi pi-plus"></i>
       <span>Create Report</span>
     </button>
-    <div class="search">
-      <i class="pi pi-search"></i>
-      <input
-        type="text"
-        placeholder="Search ..."
-        (ngModelChange)="searchProjects($event)"
-        [(ngModel)]="searchTerm"
-      />
+    <div style="display: flex;gap: 24px; align-items: center;">
+      <div class="search">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          placeholder="Search ..."
+          (ngModelChange)="searchProjects($event)"
+          [(ngModel)]="searchTerm"
+        />
+      </div>
+      <div class="view">
+        <div class="list" [class.active]="currentView === 'list'" (click)="setView('list')">
+          <i class="pi pi-list"></i>
+        </div>
+        <div class="grid" [class.active]="currentView === 'grid'" (click)="setView('grid')">
+          <i class="pi pi-th-large"></i>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="table">
+  <div class="table" *ngIf="currentView === 'list'">
     <p-table
       [value]="filteredProjects"
       [paginator]="filteredProjects && filteredProjects.length > 0"
-      [rows]="7"
+      [rows]="5"
       [tableStyle]="{ 'min-width': '50rem' }"
       styleClass="white-table"
       [rowsPerPageOptions]="[5, 10, 20]"
@@ -49,9 +59,30 @@
       </ng-template>
     </p-table>
   </div>
-  <div class="card flex justify-center" >
+  <div class="grid" *ngIf="currentView === 'grid'">
+    <div class="card" *ngFor="let project of filteredProjects">
+      <div class="card-header">
+        <div class="card-title">
+          <h3>{{ project.name }}</h3>
+        </div>
+        <div class="card-date">
+          <p>{{ project.created_at }}</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Number of findings: {{ project.findings.length }}</p>
+      </div>
+      <div class="card-footer">
+        <button class="create-btn" (click)="onClickReport(project.id)">
+          View Report
+        </button>
+      </div>
+    </div>
+  </div>
 
-    <p-dialog header="Create new report" [modal]="true"  [style]="{ width: '25rem',zIndex: '10000' }" [(visible)]="showAddModal" [closable]="true" [styleClass]="modalClass" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" (onMaximize)="onMaximizeChange($event)" (onHide)="handleMinimize()" >
+  <ng-container class="card flex justify-center" >
+
+    <p-dialog header="Create new report" [modal]="true" [blockScroll]="true" [style]="{ width: '25rem'}" [(visible)]="showAddModal" [closable]="true" [styleClass]="modalClass" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" (onMaximize)="onMaximizeChange($event)" (onHide)="handleMinimize()" >
       <div class="form">
         <div class="inputs">
           <label for="name">Name</label>
@@ -78,7 +109,7 @@
       </div>
         
     </p-dialog>
-</div>
+</ng-container>
 </div>
 <p-toast />
 <app-loading  *ngIf="isLoading">
