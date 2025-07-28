@@ -1,95 +1,81 @@
-<div *ngIf="isLoggedIn" class="container">
+
+<app-loading *ngIf="loading"></app-loading>
+
+
+<div class="container" *ngIf="!loading">
+  
+
   <div
     class="menu"
     [style.width]="menuIsOpen ? '220px' : '80px'"
     (mouseenter)="mouseOver()"
     (mouseleave)="mouseOut()"
-    [style.display]="projectViewService.expandReport || projectViewService.isRenderingAuthpage ? 'none' : 'block'"
+    [style.display]="shouldHideMenu() ? 'none' : 'block'"
   >
     <div class="logo">
       <img
         [src]="menuIsOpen ? 'assets/logo-light.png' : 'assets/emblem.svg'"
+        alt="Logo"
       />
       <div *ngIf="menuIsOpen" (click)="toggleMenu()" class="toggle">
         <i [className]="toggleIcon" style="font-size: 10px"></i>
       </div>
     </div>
-      <div class="menu-container"
-      [style.width]="menuIsOpen ? '220px' : '80px'"
-      >
-        <div class="menu_list">
-          
-          <div class="menu_items">
-            <div class="nav_item" (click)="closeMenu()" [style.justify-content]="menuIsOpen ? 'flex-start' : 'center'" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-              <i class="pi pi-home"></i>
-              <span [style.display]="menuIsOpen ? 'block' : 'none'">Dashboard</span>
-            </div>
-            <div class="nav_item" (click)="closeMenu()" [style.justify-content]="menuIsOpen ? 'flex-start' : 'center'" routerLink="reports" routerLinkActive="active">
-              <i class="pi pi-file"></i>
-              <span [style.display]="menuIsOpen ? 'block' : 'none'">Reports</span>
-            </div>
-            
-                        
+    
+    <div class="menu-container" [style.width]="menuIsOpen ? '220px' : '80px'">
+      <div class="menu_list">
+        <div class="menu_items">
+          <div 
+            class="nav_item" 
+            (click)="closeMenu()" 
+            [style.justify-content]="menuIsOpen ? 'flex-start' : 'center'" 
+            routerLink="" 
+            routerLinkActive="active" 
+            [routerLinkActiveOptions]="{ exact: true }">
+            <i class="pi pi-home"></i>
+            <span [style.display]="menuIsOpen ? 'block' : 'none'">Dashboard</span>
           </div>
-
+          
+          <div 
+            class="nav_item" 
+            (click)="closeMenu()" 
+            [style.justify-content]="menuIsOpen ? 'flex-start' : 'center'" 
+            routerLink="reports" 
+            routerLinkActive="active">
+            <i class="pi pi-file"></i>
+            <span [style.display]="menuIsOpen ? 'block' : 'none'">Reports</span>
+          </div>
         </div>
-        
-      
+      </div>
     </div>
+    
+   
   </div>
 
-  <div class="main"
-  [style.left]="left"
-    [style.width]="'calc(100vw - ' + left + ')'">
-    <header class="header" [style.width]="'calc(100vw - ' + left + ')'">
+
+  <div 
+    class="main"
+    [style.left]="shouldHideMenu() ? '0' : left"
+    [style.width]="shouldHideMenu() ? '100vw' : 'calc(100vw - ' + left + ')'">
+    
+    
+    <header 
+      class="header" 
+      [style.width]="shouldHideMenu() ? '100vw' : 'calc(100vw - ' + left + ')'"
+      *ngIf="isLoggedIn && !projectViewService.isRenderingAuthpage">
       <span>Sibasi QA Report Generator</span>
       <div class="profile">
-        <img [src]="'assets/user.png'">
+        <img [src]="'assets/user.png'" alt="User Avatar">
         <span>Admin</span>
-        
       </div>
     </header>
+    
+    <!-- Content area -->
     <div class="content">
       <router-outlet></router-outlet>
     </div>
   </div>
 </div>
-<div class="auth-container" *ngIf="!isLoggedIn">
-  <div class = "wrapper" >
-    <div class="welcome-container">
-      <div style="display: flex;flex-direction: column; gap: 30px; align-items: center;margin-bottom: 70px; ">
-        <img [src]="'assets/logo-light.png'">
-      <h3>Welcome to Sibasi QA Report Generator</h3>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 40px">
-        <div class="welcome-text">
-          <i class="pi pi-file"></i>
-          <span>generate reports with ease</span>
-        </div>
-        <div class="welcome-text">
-          <i class = "pi pi-file-pdf"></i>
-          <span>Export reports as PDF</span>
-        </div>
-        <div class="welcome-text">
-          <i class="pi pi-chart-bar"></i>
-          <span>Track test followup</span>
-        </div>
-      </div>
-    </div>
-    <div class="form-container">
-      <h3 class="form-title">Login</h3>
-      <form  [formGroup]="form" (ngSubmit)="login()">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="text" id="email" placeholder="Enter email"formControlName="email"  required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Enter password" formControlName="password">
-        </div>
-        <div class="form-group">
-          <button type="submit" >Login</button>
-    </div>
-      </form>
-  </div>
-</div>
+
+<!-- Toast notifications -->
+<p-toast></p-toast>

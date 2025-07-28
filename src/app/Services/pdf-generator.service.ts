@@ -426,7 +426,7 @@ private async addProjectInfo(doc: jsPDF, project: any, yPosition: number): Promi
       fontStyle: 'bold'
     },
     columnStyles: {
-      0: { fontStyle: 'bold', cellWidth: 60 },
+      0: { fontStyle: 'normal', cellWidth: 60 },
       1: { cellWidth: 110 }
     },
     margin: { left: 20, right: 20 }
@@ -434,44 +434,60 @@ private async addProjectInfo(doc: jsPDF, project: any, yPosition: number): Promi
 
   yPosition = (doc as any).lastAutoTable?.finalY + 15 || yPosition + 80;
 
-  // Project Description Section
   if (project.description) {
     doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
+    doc.setFont('helvetica', 'bold'); // Keep bold for heading
+    doc.setTextColor(this.colors.text[0], this.colors.text[1], this.colors.text[2]);
     doc.text('Project Description:', 20, yPosition);
-    doc.setTextColor(this.colors.text[0], this.colors.text[1], this.colors.text[2]);
-    yPosition += 10;
-
-    // Parse and format description with await
-    const { text: descriptionText, images } = await this.parseEditorJSContent(project.description, true);
-
-    // Get full page width and calculate maximum text width
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const leftMargin = 20;
-    const rightMargin = 20;
-    const maxTextWidth = pageWidth - leftMargin - rightMargin;
-
-    // Split text to fit the calculated width
-    const descriptionLines = doc.splitTextToSize(descriptionText, maxTextWidth);
-
-    doc.setTextColor(this.colors.text[0], this.colors.text[1], this.colors.text[2]);
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-
-    // Write text with left margin = 20, right margin = 20
-    doc.text(descriptionLines, 20, yPosition);
-
-    yPosition += descriptionLines.length * 6 + 15;
-
-    for (const image of images) {
-      yPosition = await this.addImageToPDF(doc, image, yPosition);
-
-      if (yPosition > 250) {
-        doc.addPage();
-        yPosition = 30;
+    yPosition += 15;
+  
+    try {
+      const parsedDescription = typeof project.description === 'string' 
+        ? JSON.parse(project.description) 
+        : project.description;
+      
+      if (parsedDescription.blocks) {
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const leftMargin = 20;
+        const rightMargin = 20;
+        const maxTextWidth = pageWidth - leftMargin - rightMargin;
+  
+        // Set text style to match executive summary
+        doc.setTextColor(this.colors.text[0], this.colors.text[1], this.colors.text[2]);
+        doc.setFontSize(10); // Same as executive summary
+        doc.setFont('helvetica', 'normal'); // Same as executive summary
+        const lineHeight = 7; // Same as executive summary
+  
+        // Process each paragraph separately for better spacing
+        parsedDescription.blocks.forEach((block: any, blockIndex: number) => {
+          if (block.type === 'paragraph' && block.data && block.data.text) {
+            const paragraphLines = doc.splitTextToSize(block.data.text, maxTextWidth);
+            
+            // Add the paragraph with same line height as executive summary
+            paragraphLines.forEach((line: string, lineIndex: number) => {
+              doc.text(line, leftMargin, yPosition + (lineIndex * lineHeight));
+            });
+            
+            yPosition += paragraphLines.length * lineHeight;
+            
+            // Add reduced space between paragraphs (except for the last one)
+            if (blockIndex < parsedDescription.blocks.length - 1) {
+              yPosition += 3; // Reduced from 8 to 3
+            }
+          }
+        });
+  
+        yPosition += 15; // Final space after description
       }
+    } catch (error) {
+      console.error('Error parsing description JSON:', error);
+      doc.setFontSize(10);
+      doc.setTextColor(255, 0, 0);
+      doc.text('Error parsing description', 20, yPosition);
+      yPosition += 20;
     }
   }
+  
 
   return yPosition;
 }
@@ -563,8 +579,15 @@ private addExecutiveSummary(doc: jsPDF, project: any, yPosition: number): number
 
 
 private addSeveritySummary(doc: jsPDF, project: any, yPosition: number): number {
-  // Check if we need a new page
-  if (yPosition > 200) {
+  // Calculate total content height needed
+  const headerHeight = 30;
+  const cardHeight = 50;
+  const summaryBarHeight = 20;
+  const spacing = 20;
+  const totalContentHeight = headerHeight + cardHeight + summaryBarHeight + spacing + 35;
+  
+  // Check if we need a new page - account for all content that will be added
+  if (yPosition + totalContentHeight > 280) { // Assuming page height ~280, adjust as needed
     doc.addPage();
     yPosition = 20;
   }
@@ -584,9 +607,9 @@ private addSeveritySummary(doc: jsPDF, project: any, yPosition: number): number 
   
   // Enhanced card layout with better proportions
   const cardWidth = 38;
-  const cardHeight = 50;
-  const spacing = 6;
-  const startX = 20 + (170 - (Object.keys(severityCounts).length * cardWidth + (Object.keys(severityCounts).length - 1) * spacing)) / 2;
+  const cardHeightActual = 50;
+  const cardSpacing = 6;
+  const startX = 20 + (170 - (Object.keys(severityCounts).length * cardWidth + (Object.keys(severityCounts).length - 1) * cardSpacing)) / 2;
   let xPosition = startX;
   
   Object.entries(severityCounts).forEach(([severity, count]) => {
@@ -595,11 +618,11 @@ private addSeveritySummary(doc: jsPDF, project: any, yPosition: number): number 
     
     // Modern card with subtle shadow
     doc.setFillColor(245, 245, 245);
-    doc.rect(xPosition + 1, yPosition + 1, cardWidth, cardHeight, 'F');
+    doc.rect(xPosition + 1, yPosition + 1, cardWidth, cardHeightActual, 'F');
     
     // Main card background
     doc.setFillColor(255, 255, 255);
-    doc.rect(xPosition, yPosition, cardWidth, cardHeight, 'F');
+    doc.rect(xPosition, yPosition, cardWidth, cardHeightActual, 'F');
     
     // Colored top accent bar
     doc.setFillColor(color.bg[0], color.bg[1], color.bg[2]);
@@ -608,7 +631,7 @@ private addSeveritySummary(doc: jsPDF, project: any, yPosition: number): number 
     // Subtle border
     doc.setDrawColor(230, 230, 230);
     doc.setLineWidth(0.5);
-    doc.rect(xPosition, yPosition, cardWidth, cardHeight);
+    doc.rect(xPosition, yPosition, cardWidth, cardHeightActual);
     
     // Severity indicator circle
     const circleRadius = 3;
@@ -641,11 +664,11 @@ private addSeveritySummary(doc: jsPDF, project: any, yPosition: number): number 
     doc.setFont('helvetica', 'normal');
     doc.text('FINDINGS', xPosition + cardWidth/2, yPosition + 44, { align: 'center' });
     
-    xPosition += cardWidth + spacing;
+    xPosition += cardWidth + cardSpacing;
   });
   
   // Add summary statistics below cards
-  yPosition += cardHeight + 20;
+  yPosition += cardHeightActual + 20;
   
   // Summary metrics bar
   doc.setFillColor(250, 250, 250);

@@ -8,9 +8,10 @@
     opacity: 0.4;
     position: fixed;
     top: 0px;
-    left: 0px;
+    left: 80px;
     z-index: 999;
     color: #465268;
+    
     
 }
 ::ng-deep .custom-spinner svg circle {

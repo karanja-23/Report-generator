@@ -188,6 +188,29 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
       
       this.cancelNewFinding();
       await this.getProjectById(this.projectId);
+      
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Finding created successfully' });
+      this.isLoading = true;
+      setTimeout(async () => {
+        
+        await this.initializeEditor('project-description', this.description);
+  
+        if (this.project?.findings && this.project.findings.length > 0) {
+          for (let i = 0; i < this.project.findings.length; i++) {
+            const finding = this.project.findings[i];
+            const editorId = `finding-description-${i}`;
+            
+            const element = document.getElementById(editorId);
+            if (element) {
+              await this.initializeEditor(editorId, finding.description);
+            } else {
+              console.warn(`Element ${editorId} not found`);
+            }
+          }
+        }
+        
+        this.isLoading = false;
+      }, 3000);
     } catch (error) {
       console.error('Error creating finding:', error);
     }

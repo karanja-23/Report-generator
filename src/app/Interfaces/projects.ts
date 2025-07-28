@@ -3,5 +3,6 @@ export interface Projects {
     name: string;
     description: JSON;
     created_at: string;
+    findings: any[];
    
 }
