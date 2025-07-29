@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ProjectViewService } from './Services/project-view.service';
 import { LoginService } from './Services/login.service';
@@ -10,6 +10,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { LoadingComponent } from './Components/loadingmain/loading.component';
 import { filter } from 'rxjs/operators';
 
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, CommonModule, RouterLink, RouterLinkActive, ReactiveFormsModule, ToastModule, LoadingComponent],
@@ -17,7 +18,7 @@ import { filter } from 'rxjs/operators';
   styleUrl: './app.component.css',
   providers: [MessageService]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit,AfterViewInit {
   menuIsOpen: boolean = true;
   toggleIcon: string = 'pi pi-circle-on';
   menuIsLocked: boolean = true;
@@ -38,6 +39,11 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.initializeAuth();
     this.watchRouteChanges();
+    this.projectViewService.setView(false);
+  }
+
+  ngAfterViewInit() {
+    this.projectViewService.setView(false);
   }
 
   private watchRouteChanges(): void {

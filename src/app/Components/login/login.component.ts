@@ -86,6 +86,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         
         // Navigate to return URL or dashboard
         setTimeout(() => {
+          this.projectViewService.setView(false);
           this.projectViewService.setRenderingAuthpage(false);
           this.router.navigate([this.returnUrl]);
         }, 1000);
