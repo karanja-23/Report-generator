@@ -66,8 +66,10 @@ export class AppComponent implements OnInit {
       console.error('Auth initialization failed:', error);
       this.handleUnauthenticated();
     } finally {
-      this.loading = false;
-      this.authInitialized = true;
+      setTimeout(() => {
+        this.loading = false;
+        this.authInitialized = true;
+      }, 1000);
     }
   }
 

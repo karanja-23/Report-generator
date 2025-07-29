@@ -274,7 +274,7 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
     if(this.expandReport) {
       this.expandReport = this.projectViewService.toggleView();
     }
-    window.history.back();
+    this.router.navigate(['/reports']);
   }
   async getUpdatedDescription(editorId: string): Promise<string> {
     try {

@@ -969,95 +969,143 @@ private getRiskLevelColor(riskLevel: string): number[] {
       const part = textParts[i].trim();
       
       if (part) {
-        // Process this text part for headers
-        currentY = await this.processTextWithHeaders(doc, part, startX, currentY, maxWidth);
+        // Check if we need a new page before processing text
+        const estimatedTextHeight = this.estimateTextHeight(doc, part, maxWidth);
+        if (currentY + estimatedTextHeight > safeBottom) {
+          doc.addPage();
+          currentY = 30;
+        }
+        
+        // Process this text part for headers - pass safeBottom for boundary checking
+        currentY = await this.processTextWithHeaders(doc, part, startX, currentY, maxWidth, safeBottom);
       }
   
       // Add image if available
       if (i < images.length && imageIndex < images.length) {
-        const estImgHeight = 60;
+        // More conservative image height estimation
+        const estImgHeight = 80; // Increased from 60 to account for captions/spacing
+        
+        // Check if image will fit on current page
         if (currentY + estImgHeight > safeBottom) {
           doc.addPage();
           currentY = 30;
         }
         
+        // Add the image and get actual height used
+        const imageStartY = currentY;
         currentY = await this.addImageToPDF(doc, images[imageIndex], currentY);
+        
+        // Double-check we didn't overflow after adding the actual image
+        if (currentY > safeBottom) {
+          // If we overflowed, move image to next page
+          doc.addPage();
+          currentY = 30;
+          currentY = await this.addImageToPDF(doc, images[imageIndex], currentY);
+        }
+        
         imageIndex++;
+        
+        // Add some spacing after image
+        currentY += 5;
       }
     }
   
     return currentY;
   }
   
+  // Helper method to estimate text height
+  private estimateTextHeight(doc: jsPDF, text: string, maxWidth: number): number {
+    const lines = doc.splitTextToSize(text, maxWidth);
+    const lineHeight = 4; // Adjust based on your font size
+    return lines.length * lineHeight + 10; // Add some padding
+  }
+  
+  // Updated processTextWithHeaders to accept safeBottom parameter
   private async processTextWithHeaders(
     doc: jsPDF,
     text: string,
     startX: number,
     y: number,
-    maxWidth: number
+    maxWidth: number,
+    safeBottom: number // Add this parameter
   ): Promise<number> {
     const pageHeight = doc.internal.pageSize.getHeight();
-    const safeBottom = pageHeight - 25;
     const headerRegex = /\[HEADER:(\d+):(\d+)\](.*?)\[\/HEADER\]/g;
-    
-    const parts = text.split(headerRegex);
     let currentY = y;
     
-    for (let i = 0; i < parts.length; i++) {
-      if (i % 4 === 0) {
-        // Regular text
-        if (parts[i].trim()) {
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(10);
-          doc.setTextColor(...this.colors.text);
-          
-          const wrapped = doc.splitTextToSize(parts[i].trim(), maxWidth);
-          const estHeight = wrapped.length * 4 + 2;
-          
-          if (currentY + estHeight > safeBottom) {
-            doc.addPage();
-            currentY = 30;
-          }
-          
-          doc.text(wrapped, startX, currentY);
-          currentY += estHeight;
+    // Split text into segments (headers and regular text)
+    const segments = [];
+    let lastIndex = 0;
+    let match;
+    
+    while ((match = headerRegex.exec(text)) !== null) {
+      // Add text before header
+      if (match.index > lastIndex) {
+        segments.push({
+          type: 'text',
+          content: text.substring(lastIndex, match.index)
+        });
+      }
+      
+      // Add header
+      segments.push({
+        type: 'header',
+        level: parseInt(match[1]),
+        size: parseInt(match[2]),
+        content: match[3]
+      });
+      
+      lastIndex = match.index + match[0].length;
+    }
+    
+    // Add remaining text
+    if (lastIndex < text.length) {
+      segments.push({
+        type: 'text',
+        content: text.substring(lastIndex)
+      });
+    }
+    
+    // Process each segment
+    for (const segment of segments) {
+      if (segment.type === 'header') {
+        // Check if header fits on current page
+        const headerHeight = segment.size || 12;
+        if (currentY + headerHeight + 5 > safeBottom) {
+          doc.addPage();
+          currentY = 30;
         }
-      } else if (i % 4 === 3) {
-        // Header text (parts[i-2] = level, parts[i-1] = fontSize, parts[i] = text)
-        const level = parseInt(parts[i-2]);
-        const fontSize = parseInt(parts[i-1]);
-        const headerText = parts[i];
         
-        if (headerText.trim()) {
-          // Add spacing before header
-          currentY += 4;
-          
-          // Set header styling
-          doc.setFont('helvetica', 'bold');
-          doc.setFontSize(fontSize);
-          doc.setTextColor(...this.colors.text);
-          
-          // Render header
-          const wrapped = doc.splitTextToSize(headerText.trim(), maxWidth);
-          const estHeight = wrapped.length * (fontSize * 0.4) + 6;
-          
-          if (currentY + estHeight > safeBottom) {
-            doc.addPage();
-            currentY = 30;
-          }
-          
-          doc.text(wrapped, startX, currentY);
-          currentY += estHeight;
-          
-          // Add spacing after header
-          currentY += 2;
+        doc.setFontSize(segment.size || 12);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...this.colors.text);
+        doc.text(segment.content, startX, currentY);
+        currentY += (segment.size || 12) * 0.4 + 5;
+        
+      } else if (segment.type === 'text' && segment.content.trim()) {
+        // Process regular text
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(...this.colors.text);
+        
+        const lines = doc.splitTextToSize(segment.content.trim(), maxWidth);
+        const textHeight = lines.length * 4;
+        
+        // Check if text block fits on current page
+        if (currentY + textHeight > safeBottom) {
+          doc.addPage();
+          currentY = 30;
         }
+        
+        doc.text(lines, startX, currentY);
+        currentY += textHeight + 3;
       }
     }
     
     return currentY;
   }
-
+  
+  
   
   
   async getBase64ImageFromURL(imageUrl: string): Promise<string> {
