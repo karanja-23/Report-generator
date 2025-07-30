@@ -127,7 +127,6 @@
       <div class="findings">
         <div class="head">
           <span>Findings</span>
-          <!-- Updated Add finding button with click handler -->
           <button class="add-btn" (click)="showAddFindingForm()">
             <i class="pi pi-plus"></i>
             <span>Add finding</span>
@@ -192,17 +191,17 @@
             </div>
           </div>
           
-
-          <!-- Existing findings -->
+      
+          <!-- Existing findings with trackBy and fixed binding -->
           <div *ngIf="project?.findings && project?.findings.length > 0">
-            <div class="findings-container" *ngFor="let finding of project?.findings; let i = index">
+            <div class="findings-container" *ngFor="let finding of project?.findings; let i = index; trackBy: trackByFindingId">
               <div class="finding-head">
                 <div class="labels">
                   <div class="label-1">
-                    <span>{{finding?.severity.name || 'Medium'}}</span>
+                    <span>{{finding?.severity?.name || 'Medium'}}</span>
                   </div>
                   <div class="label-2">
-                    <span>{{finding?.category.name || 'Functional'}}</span> 
+                    <span>{{finding?.category?.name || 'Functional'}}</span> 
                   </div>
                 </div>
                 <div>
@@ -218,20 +217,18 @@
               <div class="severity-select">
                 <div class="select-container">
                   <label for="severity-{{i}}">Severity</label>
-                  <select name="severity" id="severity-{{i}}" [(ngModel)]="finding.severity.id">
-                    <option [ngValue]="null" selected>Select severity</option>
-                    <option *ngFor="let severity of severities" [ngValue]="severity.id" 
-                            [selected]="severity.id === finding.severity_id">
+                  <select name="severity" id="severity-{{i}}" [ngModel]="getSelectedSeverity(finding)" (ngModelChange)="finding.severity_id = $event">
+                    <option [ngValue]="null">Select severity</option>
+                    <option *ngFor="let severity of severities" [ngValue]="severity.id">
                       {{ severity.name }}
                     </option>
                   </select>
                 </div>
                 <div class="select-container">
-                  <label for="type-{{i}}">Type</label>
-                  <select name="type" id="type-{{i}}" [(ngModel)]="finding.category.id">
+                  <label for="type-{{i}}">Category</label>
+                  <select name="type" id="type-{{i}}" [ngModel]="getSelectedCategory(finding)" (ngModelChange)="finding.category_id = $event">
                     <option [ngValue]="null">Select category</option>
-                    <option *ngFor="let category of categories" [ngValue]="category.id"
-                            [selected]="category.id === finding.category_id">
+                    <option *ngFor="let category of categories" [ngValue]="category.id">
                       {{ category.name }}
                     </option>
                   </select>
@@ -252,7 +249,7 @@
               </div>
             </div>
           </div>
-
+      
          
           <div *ngIf="(!project?.findings || project?.findings.length === 0) && !showNewFindingForm" class="no-findings" style="text-align: center; padding: 40px; color: #6c757d;">
             <i class="pi pi-info-circle" style="font-size: 3em; margin-bottom: 20px;"></i>
@@ -261,7 +258,6 @@
           </div>
         </div>
       </div>
-
       
     </div>
   </div>
