@@ -81,6 +81,14 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
     category_id: null,
     severity_id: null
   };
+  editFinding: any = {
+    title: '',
+    description: '',
+    project_id: this.projectId,
+    category_id: null,
+    severity_id: null
+  };
+  editFindingMessage: string = '';
 
   // ========================================
   // CONSTRUCTOR
@@ -700,7 +708,7 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
         category_id: this.newFinding.category_id,
         severity_id: this.newFinding.severity_id
       };
-      
+      this.isLoading = true;
       const response = await this.reportsService.postFinding(finding);
       
       // Cleanup and reset form
@@ -710,14 +718,10 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
       await this.getProjectById(this.projectId);
       this.calculateSeverityCount();
       
-      this.messageService.add({ 
-        severity: 'success', 
-        summary: 'Success', 
-        detail: 'Finding created successfully' 
-      });
+      
       
       // Reinitialize all editors after adding new finding
-      this.isLoading = true;
+      
       setTimeout(async () => {
         try {
           await this.cleanupAllEditors();
@@ -726,7 +730,14 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
           console.error('Error reinitializing editors:', error);
           this.isLoading = false;
         }
-      }, 1000); // Increased delay
+      }, 1000); 
+      setTimeout(() => {
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: 'Success', 
+          detail: 'Finding created successfully' 
+        });
+      },2000);
       
     } catch (error) {
       console.error('Error creating finding:', error);
@@ -791,6 +802,26 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
       description: this.project.description
     }, this.project.id);
     this.showSuccess();
+  }
+  async updateFinding(findingDescriptionId: string, finding: any): Promise<void> {
+    const updatedDescription = await this.getUpdatedDescription(findingDescriptionId);
+    const findingDescription = updatedDescription;
+    const updatedSeverity = finding.severity_id ? finding.severity_id : finding.severity.id;
+    const updatedCategory = finding.category_id ? finding.category_id : finding.category.id;
+    console.log(finding.severity.id);
+    this.editProjectMessage= await this.reportsService.editFinding({
+      title: finding.title,
+      project_id: finding.project_id,
+      category_id: updatedCategory,
+      severity_id: updatedSeverity,
+      description: findingDescription
+    }, finding.id);
+  
+    this.showSuccess();
+    
+    // Refresh project data
+    await this.getProjectById(this.projectId);
+    this.calculateSeverityCount();
   }
 
   async handleDeleteProject(): Promise<void> {
@@ -935,6 +966,13 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } finally {
       this.isLoading = false;
+      setTimeout(() => {
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: 'Success', 
+          detail: 'PDF generated successfully' 
+        });
+      }, 1000);
     }
   }
 
@@ -958,5 +996,20 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
       detail: this.editProjectMessage, 
       life: 5000 
     });
+  }
+  async deleteFinding(findingId: number): Promise<void> {
+    try {
+      await this.reportsService.deleteFinding(findingId);
+      this.project.findings = this.project.findings.filter((finding: any) => finding.id !== findingId);
+      this.calculateSeverityCount();
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Finding deleted successfully'
+      })
+    } catch (error) {
+      console.error('Failed to delete finding:', error);
+    }
+
   }
 }

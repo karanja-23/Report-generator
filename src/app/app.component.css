@@ -231,10 +231,10 @@
   
 }
 .content{
-    margin-top: 50px;
+    margin-top: 30px;
     background-color: var(--sibasiWhite);
     width: 95%;
-    min-height: calc(100vh -  120px);
+    min-height: calc(100vh -  100px);
     overflow: hidden;
     overflow-y: auto;
     position: relative;

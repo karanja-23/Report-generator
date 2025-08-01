@@ -204,14 +204,15 @@
                     <span>{{finding?.category?.name || 'Functional'}}</span> 
                   </div>
                 </div>
-                <div>
+                <div class="delete" (click)="deleteFinding(finding.id)">
                   <i class="pi pi-trash"></i>
                 </div>
+                
               </div>
               
               <div class="title">
                 <label for="title-{{i}}">Title</label>
-                <input id="title-{{i}}" [value]="finding?.title" type="text" placeholder="Enter title">
+                <input id="title-{{i}}"[(ngModel)]="finding.title" type="text" placeholder="Enter title">
               </div>
               
               <div class="severity-select">
@@ -242,7 +243,7 @@
                 </div>
               </div>
               <div>
-                <button class="update-btn">
+                <button class="update-btn" (click)="updateFinding(`finding-description-${i}`, finding)">
                   <i class="pi pi-save"></i>
                   <span>Update Finding</span>
                 </button>

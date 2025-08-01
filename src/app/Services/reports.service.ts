@@ -76,9 +76,27 @@ export class ReportsService {
     
     return response['message'];
   }
+  async deleteFinding(id: number){
+    const response = await fetch(this.myUrl + 'finding/' + id, {
+      method: 'DELETE'
+    })
+    .then(res => res.json());
+    return response['message'];
+  }
   async deleteProject(id: number){
     const response = await fetch(this.myUrl + 'project/' + id, {
       method: 'DELETE'
+    })
+    .then(res => res.json());
+    return response['message'];
+  }
+  async editFinding(finding: any, id: number){
+    const response = await fetch(this.myUrl + 'finding/' + id, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(finding)      
     })
     .then(res => res.json());
     return response['message'];
