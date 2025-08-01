@@ -7,10 +7,10 @@ import { LoginService } from '../../Services/login.service';
 import { ProjectViewService } from '../../Services/project-view.service';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
-
+import { LoadingComponent } from '../loadingmain/loading.component';
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, ToastModule,CommonModule],
+  imports: [ReactiveFormsModule, ToastModule,CommonModule,LoadingComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   standalone: true,
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   successMessage: string = '';
   isLoading: boolean = false;
   returnUrl: string = '/'; // Default return URL
-
+  isRedirecting: boolean = false;
   constructor(
     public loginService: LoginService,
     public projectViewService: ProjectViewService,
@@ -84,13 +84,13 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.showSuccess();
         
         this.form.reset();
-        
+        this.projectViewService.setRenderingAuthpage(false);
+        this.isRedirecting = true;
         // Navigate to return URL or dashboard
         setTimeout(() => {
-          this.projectViewService.setView(false);
-          this.projectViewService.setRenderingAuthpage(false);
+          this.isRedirecting = false;          
           this.router.navigate([this.returnUrl]);
-        }, 1000);
+        }, 5000);
       } else {
         this.handleLoginError(response['error'] || 'Login failed');
       }

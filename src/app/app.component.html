@@ -67,7 +67,15 @@
       <div class="profile">
         <div class="profile-trigger" (click)="op.toggle($event)">
           <img [src]="'assets/user.png'" alt="User Avatar" class="profile-avatar">
-          <span class="welcome-text">Welcome, {{this.loginService.loggedUser? (this.loginService.loggedUser.name.split(' ').at(-1)) : 'Stranger'}}!</span>
+          `<span class="welcome-text">
+            Welcome, {{
+              this.loginService.loggedUser && 
+              this.loginService.loggedUser.name && 
+              this.loginService.loggedUser.name.trim() 
+                ? this.loginService.loggedUser.name.split(' ').at(-1) 
+                : 'Stranger'
+            }}!
+          </span>`
           <i class="pi pi-chevron-down profile-chevron"></i>
         </div>
         
