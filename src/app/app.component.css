@@ -246,3 +246,186 @@
   display: none; /* Chrome, Safari, Opera */
 }
 
+
+
+.profile {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem; 
+ 
+  cursor: pointer;
+  transition: all 0.3s ease;
+ 
+}
+
+.profile-trigger:hover {
+  
+  transform: translateY(-1px);
+}
+
+.profile-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #475569;
+  white-space: nowrap;
+}
+
+.profile-chevron {
+  font-size: 0.75rem;
+  color: #64748b;
+  transition: transform 0.2s ease;
+}
+
+.profile-trigger:hover .profile-chevron {
+  transform: rotate(180deg);
+}
+
+
+::ng-deep .profile-popover.p-popover {
+  background: inherit !important;
+  border-radius: 14px 28px 14px 28px !important;
+  border: inherit !important;
+}
+
+::ng-deep .profile-popover.p-popover::before,
+::ng-deep .profile-popover.p-popover::after {
+  display: none !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+::ng-deep .profile-popover .p-popover-content {
+  padding: 0 !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid #e2e8f0 !important;
+  overflow: hidden;
+  background: #ffffff !important;
+}
+
+/* Remove any arrow/pointer styling */
+::ng-deep .profile-popover .p-popover-arrow {
+  display: none !important;
+}
+
+::ng-deep .profile-popover[data-pc-section="arrow"] {
+  display: none !important;
+}
+
+/* Target any potential arrow elements */
+::ng-deep .profile-popover *[class*="arrow"] {
+  display: none !important;
+}
+
+.profile-popover-content {
+  width: 20rem;
+  background: #ffffff;
+}
+
+.user-info-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.popover-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1e293b;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.2;
+}
+
+.user-email {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #e2e8f0 50%, transparent 100%);
+}
+
+.actions-section {
+  padding: 0.75rem;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #475569;
+}
+
+.action-item:hover {
+  
+  color: #dc2626;
+  transform: translateX(2px);
+}
+
+.action-icon {
+  font-size: 1rem;
+  width: 1rem;
+  text-align: center;
+}
+
+.action-text {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .profile-popover-content {
+    width: 18rem;
+  }
+  
+  .welcome-text {
+    display: none;
+  }
+  
+  .profile-trigger {
+    padding: 0.5rem;
+    border-radius: 50%;
+  }
+}

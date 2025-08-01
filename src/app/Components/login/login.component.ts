@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         localStorage.setItem('token', JSON.stringify(response));
         this.loginService.setIsLoggedIn(true);
         this.isLoggedIn = true;
-        
+        this .loginService.loggedUser = this.loginService.getProtectedUser(response['access_token']);
         this.successMessage = 'Login successful';
         this.showSuccess();
         

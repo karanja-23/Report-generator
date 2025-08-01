@@ -39,9 +39,11 @@ export class AppComponent implements OnInit,AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    
     this.initializeAuth();
     this.watchRouteChanges();
     this.projectViewService.setView(false);
+    
   }
 
   ngAfterViewInit() {
@@ -91,9 +93,9 @@ export class AppComponent implements OnInit,AfterViewInit {
         if (accessToken) {
           const user = await this.loginService.getProtectedUser(accessToken);
           const isAuthenticated = !!user?.email;
-          
+          this.loginService.loggedUser = user;
           this.loggedUser = user;
-          
+          this.loginService.loggedUser = user;
           this.setAuthState(isAuthenticated);
           
           if (isAuthenticated) {
@@ -222,6 +224,7 @@ export class AppComponent implements OnInit,AfterViewInit {
 
   logout() {
     this.loginService.logout();
+    this.loginService.loggedUser = null;
     this.setAuthState(false);
     this.router.navigate(['/login']);
   }
