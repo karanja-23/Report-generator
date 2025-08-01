@@ -9,11 +9,12 @@ import { MessageService } from 'primeng/api';
 import { Router, NavigationEnd } from '@angular/router';
 import { LoadingComponent } from './Components/loadingmain/loading.component';
 import { filter } from 'rxjs/operators';
+import {PopoverModule} from 'primeng/popover';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, RouterLink, RouterLinkActive, ReactiveFormsModule, ToastModule, LoadingComponent],
+  imports: [RouterOutlet, CommonModule, RouterLink, RouterLinkActive, ReactiveFormsModule, ToastModule, LoadingComponent, PopoverModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [MessageService]
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit,AfterViewInit {
   isLoggedIn: boolean = false;
   loading = true;
   authInitialized = false;
+  loggedUser: any = null;
 
   constructor(
     public loginService: LoginService,
@@ -90,6 +92,8 @@ export class AppComponent implements OnInit,AfterViewInit {
           const user = await this.loginService.getProtectedUser(accessToken);
           const isAuthenticated = !!user?.email;
           
+          this.loggedUser = user;
+          
           this.setAuthState(isAuthenticated);
           
           if (isAuthenticated) {
@@ -151,7 +155,11 @@ export class AppComponent implements OnInit,AfterViewInit {
   }
 
   shouldHideMenu(): boolean {
-    // Don't show menu until auth is initialized
+    // Use the service state directly instead of component state
+    const isLoggedIn = this.loginService.isLoggedIn;
+    
+    
+    
     if (!this.authInitialized || this.loading) {
       return true;
     }
@@ -162,7 +170,7 @@ export class AppComponent implements OnInit,AfterViewInit {
     return this.projectViewService.expandReport || 
            this.projectViewService.isRenderingAuthpage ||
            isAuthPage || 
-           !this.isLoggedIn;
+           !isLoggedIn; // Use service state instead of component state
   }
 
   toggleMenu() {

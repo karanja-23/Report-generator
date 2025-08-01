@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
-  isLoggedIn: boolean = true
+  isLoggedIn: boolean = false
 
   constructor( 
     public loginService: LoginService,
@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.projectViewService.setView(false);
+    this.isLoggedIn = this.loginService.isLoggedIn
   }
   
    
