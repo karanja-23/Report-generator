@@ -223,9 +223,13 @@ export class AppComponent implements OnInit,AfterViewInit {
   }
 
   logout() {
+    this.loading = true;
+    setTimeout(() => {
+    this.loading = false;
     this.loginService.logout();
     this.loginService.loggedUser = null;
     this.setAuthState(false);
     this.router.navigate(['/login']);
+    },3000);
   }
 }
