@@ -6,7 +6,8 @@ import { Injectable } from '@angular/core';
 export class LoginService {
   url= 'http://127.0.0.1:6060'
   constructor() { }
-  isLoggedIn: boolean = false
+  isLoggedIn: boolean = false;
+  loggedUser: any = null
   setIsLoggedIn(value: boolean){
     this.isLoggedIn = value
     return this.isLoggedIn
@@ -31,8 +32,9 @@ export class LoginService {
       }
     })
     .then(res => res.json());
-    console.log(response)
+    this.loggedUser = response
     return response;
+    
   }
   getToken(): string | null {
     if (typeof window !== 'undefined' && localStorage !== undefined) {

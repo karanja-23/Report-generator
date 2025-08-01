@@ -6,10 +6,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { LoginService } from '../../Services/login.service';
 import { ProjectViewService } from '../../Services/project-view.service';
 import { ToastModule } from 'primeng/toast';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, ToastModule],
+  imports: [ReactiveFormsModule, ToastModule,CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   standalone: true,
@@ -78,7 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         localStorage.setItem('token', JSON.stringify(response));
         this.loginService.setIsLoggedIn(true);
         this.isLoggedIn = true;
-        
+        this .loginService.loggedUser = this.loginService.getProtectedUser(response['access_token']);
         this.successMessage = 'Login successful';
         this.showSuccess();
         
