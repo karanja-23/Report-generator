@@ -34,15 +34,19 @@ export class ReportsComponent implements OnInit, OnDestroy {
   private editorInitialized: boolean = false;
   currentView: 'list' | 'grid' = 'list';
   
-  first=0;
-  rows=6
-  totalRecords=0
-  paginatedProjects:any[]=[]
+  gridFirst = 0;
+  gridRows = 4;
+  gridTotalRecords = 0;
+  paginatedProjects: any[] = [];
+
+  listFirst = 0;
+  listRows = 5;
 
   reportName: string = '';
   reportDescription: string = '';
   reportCreatedAt: Date = new Date();
   createProjectMessage: string = '';
+
 
   constructor(
     private router: Router,
@@ -55,18 +59,18 @@ export class ReportsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(){
-    this.projectViewService.setView(false);
+   
     this.isLoading = true;
     this.projects = await this.reportsService.getProjects();
     this.filteredProjects = this.projects;
     this.projectViewService.setView(false);
     this.isLoading = false;
-    this.updatePaginatedData();
+    this.updateGridPaginatedData();
   
   }
-  updatePaginatedData() {
-    this.totalRecords = this.filteredProjects.length;
-    this.paginatedProjects = this.filteredProjects.slice(this.first, this.first + this.rows);
+  updateGridPaginatedData() {
+    this.gridTotalRecords = this.filteredProjects.length;
+    this.paginatedProjects = this.filteredProjects.slice(this.gridFirst, this.gridFirst + this.gridRows);
   }
   ngOnDestroy(): void {
     this.projectViewService.setRenderingAuthpage(false);
@@ -75,21 +79,28 @@ export class ReportsComponent implements OnInit, OnDestroy {
     this.currentView = view;
 
 }
-onPageChange(event: any) {
-  this.first = event.first;
-  this.rows = event.rows;
-  this.updatePaginatedData();
+onGridPageChange(event: any) {
+  this.gridFirst = event.first;
+  this.gridRows = event.rows;
+  this.updateGridPaginatedData();
 }
-  searchProjects(searchValue: string) {
-    if (!searchValue || searchValue.trim() === '') {
-      this.filteredProjects = this.projects;
-    } else {
-      this.filteredProjects = this.projects.filter(project => 
-        (project.name.toLowerCase() ??'').includes(searchValue.toLowerCase()) ||
-        (project.created_at.toLowerCase() ??'').includes(searchValue.toLowerCase())
-      );
-    }
+searchProjects(searchValue: string) {
+  if (!searchValue || searchValue.trim() === '') {
+    this.filteredProjects = this.projects;
+  } else {
+    this.filteredProjects = this.projects.filter(project => 
+      (project.name.toLowerCase() ?? '').includes(searchValue.toLowerCase()) ||
+      (project.created_at.toLowerCase() ?? '').includes(searchValue.toLowerCase())
+    );
   }
+  
+  // Reset both paginations to first page when searching
+  this.gridFirst = 0;
+  this.listFirst = 0;
+  
+  // Update grid paginated data
+  this.updateGridPaginatedData();
+}
   onClickReport(reportId: number){
     this.router.navigate(['reports', reportId]);
   }
@@ -99,6 +110,11 @@ onPageChange(event: any) {
     } else {
       this.selectedProjectId = projectId;
     }
+  }
+  
+  onListPageChange(event: any) {
+    this.listFirst = event.first;
+    this.listRows = event.rows;
   }
   toggleAddModal() {
     this.showAddModal = !this.showAddModal;
