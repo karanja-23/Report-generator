@@ -28,14 +28,14 @@
     <p-table
       [value]="filteredProjects"
       [paginator]="filteredProjects.length > 0 ? true : false"   
-      [first]="first"   
+      [first]="listFirst"   
       [showCurrentPageReport]="true"
       [rows]="5"
       [tableStyle]="{ 'min-width': '50rem' }"
       styleClass="white-table"
-      [rowsPerPageOptions]="[5, 10, 20]"
+      [rowsPerPageOptions]="[5, 10]"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      (onPage)="onPageChange($event)"
+      (onPage)="onListPageChange($event)"
     >
       <ng-template #header>
         <tr>
@@ -64,24 +64,46 @@
      
     </p-table>
   </div>
-  <div class="grid" *ngIf="currentView === 'grid'">
-    <div class="card" *ngFor="let project of filteredProjects">
-      <div class="card-header">
-        <div class="card-title">
-          <h3>{{ project.name }}</h3>
+  <div class="grid-container" *ngIf="currentView === 'grid'">
+    <div class="grid" *ngIf="paginatedProjects && paginatedProjects.length > 0">
+      <div class="card" *ngFor="let project of paginatedProjects">
+        <div class="card-header">
+          <div class="card-title">
+            <h3>{{ project.name }}</h3>
+          </div>
+          <div class="card-date">
+            <p>{{ project.created_at | date:'medium' }}</p>
+          </div>
         </div>
-        <div class="card-date">
-          <p>{{ project.created_at }}</p>
+        <div class="card-body">
+          <p>Number of findings: {{ project.findings.length }}</p>
+        </div>
+        <div class="card-footer">
+          <button class="create-btn" (click)="onClickReport(project.id)">
+            <i class="fas fa-eye"></i>
+            <span>View Report</span>
+          </button>
         </div>
       </div>
-      <div class="card-body">
-        <p>Number of findings: {{ project.findings.length }}</p>
-      </div>
-      <div class="card-footer">
-        <button class="create-btn" (click)="onClickReport(project.id)">
-          View Report
-        </button>
-      </div>
+    </div>
+  
+    <!-- Empty state -->
+    <div class="grid-empty" *ngIf="!paginatedProjects || paginatedProjects.length === 0">
+      <i class="fas fa-folder-open"></i>
+      <p>No projects found</p>
+    </div>
+  
+    <!-- Paginator container -->
+    <div class="grid-paginator-container" *ngIf="gridTotalRecords > 0">
+      <p-paginator 
+        (onPageChange)="onGridPageChange($event)" 
+        [first]="gridFirst" 
+        [rows]="gridRows" 
+        [totalRecords]="gridTotalRecords" 
+        [rowsPerPageOptions]="[4,6]"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} projects">
+      </p-paginator>
     </div>
   </div>
 

@@ -74,20 +74,23 @@
 }
 .table{
     width: 100%;
-    min-height: 400px;
+    height: 100%;
+
     border-radius: 10px;
     overflow: hidden;
     box-sizing: border-box;
     position: relative;
-    
+    margin-bottom: 40px;
+   
 }
 
 ::ng-deep .white-table {
-    background-color: white !important;
+    
     color: var(--text-color);
     margin-bottom: 10px;
-    height: 600px;
+    min-height: 610px;
     width: 95%;
+    padding-bottom: 30px;
     
        
 }
@@ -152,7 +155,7 @@
     border-radius: 0 0 10px 10px;
     color: var(--text-color) !important;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     width: 100%;
     justify-content: flex-end !important;
     font-size: 0.9rem;
@@ -465,136 +468,281 @@
   }
 
   
-  .grid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    gap: 24px;
-    padding: 15px;
-    color: var(--text-color);
-    box-sizing: border-box;
-    
+  /* Container for grid view with paginator */
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  border-radius: 10px;
+  gap: 60px;
+  width: 95%;
+  height: auto;
+  min-height: auto;
+  max-height: none;
+  position: relative;
+  flex-shrink: 0;
 }
 
+/* Grid layout */
 .grid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    gap: 24px;
-   
-    color: var(--text-color);
-    box-sizing: border-box;
-  }
-  
-  .card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(70, 82, 104, 0.1);
-    border: 1px solid rgba(70, 82, 104, 0.1);
-    transition: all 0.3s ease;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .card:hover {
-    box-shadow: 0 8px 25px rgba(70, 82, 104, 0.15);
-    transform: translateY(-2px);
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+  color: var(--text-color);
+  box-sizing: border-box;
+  height: auto;
+  min-height: auto;
+  grid-auto-rows: min-content;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(70, 82, 104, 0.1);
+  border: 1px solid rgba(70, 82, 104, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  box-shadow: 0 8px 25px rgba(70, 82, 104, 0.15);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(70, 82, 104, 0.1);
+  background: linear-gradient(135deg, #465268, #7382a1);
+  border-bottom: 2px solid #7382a1;
+  color: white;
+}
+
+.card-title {
+  margin: 0;
+}
+
+.card-title h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  line-height: 1.4;
+}
+
+.card-date {
+  margin: 8px 0 0;
+}
+
+.card-date p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+
+.card-body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.card-body p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #465268;
+  font-weight: 500;
+}
+
+.card-footer {
+  padding: 16px 20px 20px;
+  border-top: 1px solid rgba(70, 82, 104, 0.1);
+  background: rgba(70, 82, 104, 0.02);
+}
+
+.view-btn {
+  width: 100%;
+  padding: 12px 24px;
+  background: #465268;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.view-btn:hover {
+  background: #394050;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(70, 82, 104, 0.3);
+}
+
+.view-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(70, 82, 104, 0.2);
+}
+
+/* Grid-specific paginator styles */
+.grid-paginator-container {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+/* Override paginator styles for grid view */
+::ng-deep .grid-container .p-paginator {
+  background-color: var(--sibasiWhite) !important;
+  padding: 12px 20px !important;
+  border-radius: 10px !important;
+  color: var(--text-color) !important;
+  position: static !important; /* Remove absolute positioning */
+  width: auto !important;
+  justify-content: center !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+ 
+}
+
+::ng-deep .grid-container .p-paginator .p-paginator-pages .p-paginator-page {
+  background-color: var(--sibasiWhite) !important;
+  color: var(--text-color) !important;
+  border: none !important;
+  margin: 0 2px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+}
+
+::ng-deep .grid-container .p-paginator .p-paginator-pages .p-paginator-page.p-highlight,
+::ng-deep .grid-container .p-paginator .p-paginator-pages .p-paginator-page.p-paginator-page-selected {
+  background: linear-gradient(271.89deg, #465268, #7382a1) !important;
+  color: var(--sibasiWhite) !important;
+  font-weight: bold !important;
+  border-radius: 14px 28px 14px 28px !important;
+}
+
+::ng-deep .grid-container .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
+  background-color: var(--sibasiGreyLight) !important;
+  color: var(--text-color) !important;
+  border-radius: 14px 28px 14px 28px !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .grid-container .p-paginator .p-paginator-prev,
+::ng-deep .grid-container .p-paginator .p-paginator-next,
+::ng-deep .grid-container .p-paginator .p-paginator-first,
+::ng-deep .grid-container .p-paginator .p-paginator-last {
+  background-color: var(--sibasiWhite) !important;
+  color: var(--text-color) !important;
+  border-radius: 14px 28px 14px 28px !important;
+  border: none !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  margin: 0 4px !important;
+}
+
+::ng-deep .grid-container .p-paginator .p-paginator-prev:hover,
+::ng-deep .grid-container .p-paginator .p-paginator-next:hover,
+::ng-deep .grid-container .p-paginator .p-paginator-first:hover,
+::ng-deep .grid-container .p-paginator .p-paginator-last:hover {
+  background-color: var(--sibasiGreyLight) !important;
+  color: var(--text-color) !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .grid-container .p-paginator .p-paginator-current {
+  color: var(--text-color) !important;
+  font-weight: 600 !important;
+  opacity: 0.84 !important;
+  letter-spacing: 1px !important;
+  margin: 0 12px !important;
+}
+
+::ng-deep .grid-container .p-paginator-rpp-dropdown {
+  background-color: var(--sibasiWhite) !important;
+    color: var(--text-color) !important;
+    border: 2px solid #7382a1 !important;
+    padding: 0px 15px !important;
+    border-radius: 14px 28px 14px 28px !important;
+}
+
+::ng-deep .grid-container .p-paginator-rpp-dropdown:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(115, 130, 161, 0.2) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
   
   .card-header {
-    padding: 20px 20px 16px;
-    border-bottom: 1px solid rgba(70, 82, 104, 0.1);
-    background: linear-gradient(135deg, #465268, #7382a1);
-    border-bottom: 2px solid #7382a1;
-    color: white;
-  }
-  
-  .card-title {
-    margin: 0;
-  }
-  
-  .card-title h3 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: white;
-    line-height: 1.4;
-  }
-  
-  .card-date {
-    margin: 8px 0 0;
-  }
-  
-  .card-date p {
-    margin: 0;
-    font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 400;
+    padding: 16px 16px 12px;
   }
   
   .card-body {
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    align-items: center;
-  }
-  
-  .card-body p {
-    margin: 0;
-    font-size: 0.95rem;
-    color: #465268;
-    font-weight: 500;
+    padding: 16px;
   }
   
   .card-footer {
-    padding: 16px 20px 20px;
-    border-top: 1px solid rgba(70, 82, 104, 0.1);
-    background: rgba(70, 82, 104, 0.02);
+    padding: 12px 16px 16px;
   }
   
-  .view-btn {
-    width: 100%;
-    padding: 12px 24px;
-    background: #465268;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    outline: none;
+  ::ng-deep .grid-container .p-paginator {
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
   }
   
-  .view-btn:hover {
-    background: #394050;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(70, 82, 104, 0.3);
+  ::ng-deep .grid-container .p-paginator .p-paginator-pages .p-paginator-page,
+  ::ng-deep .grid-container .p-paginator .p-paginator-prev,
+  ::ng-deep .grid-container .p-paginator .p-paginator-next,
+  ::ng-deep .grid-container .p-paginator .p-paginator-first,
+  ::ng-deep .grid-container .p-paginator .p-paginator-last {
+    min-width: 32px !important;
+    height: 32px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   
-  .view-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(70, 82, 104, 0.2);
+  ::ng-deep .grid-container .p-paginator .p-paginator-current {
+    display: none !important; /* Hide current page text on very small screens */
   }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .grid {
-      grid-template-columns: 1fr;
-      padding: 16px;
-      gap: 16px;
-    }
-    
-    .card-header {
-      padding: 16px 16px 12px;
-    }
-    
-    .card-body {
-      padding: 16px;
-    }
-    
-    .card-footer {
-      padding: 12px 16px 16px;
-    }
-  }
+}
+
+/* Empty state for grid */
+.grid-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: var(--text-color);
+  opacity: 0.6;
+}
+
+.grid-empty i {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  color: #7382a1;
+}
+
+.grid-empty p {
+  font-size: 1.1rem;
+  font-weight: 500;
+}

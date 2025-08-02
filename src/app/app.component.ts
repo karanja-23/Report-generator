@@ -42,8 +42,7 @@ export class AppComponent implements OnInit,AfterViewInit {
     
     this.initializeAuth();
     this.watchRouteChanges();
-    this.projectViewService.setView(false);
-    
+       
   }
 
   ngAfterViewInit() {
