@@ -85,12 +85,12 @@
 }
 
 ::ng-deep .white-table {
-    
+    box-sizing: border-box;
     color: var(--text-color);
     margin-bottom: 10px;
     min-height: 610px;
     width: 95%;
-    padding-bottom: 30px;
+    padding-bottom: 0px;
     
        
 }
@@ -155,11 +155,12 @@
     border-radius: 0 0 10px 10px;
     color: var(--text-color) !important;
     position: absolute;
-    bottom: 0;
+    bottom: 0px;
     width: 100%;
     justify-content: flex-end !important;
     font-size: 0.9rem;
     font-weight: 600;
+    box-sizing: border-box !important;
     
  }
  ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
@@ -205,6 +206,7 @@
     border: 2px solid #7382a1 !important;
     padding: 0px 15px !important;
     border-radius: 14px 28px 14px 28px !important;
+    display: none !important;
 }
 ::ng-deep .p-paginator-rpp-dropdown svg{
   fill: #7382a1 !important;
@@ -475,12 +477,12 @@
   background-color: transparent;
   border-radius: 10px;
   gap: 60px;
-  width: 95%;
+  width: 97%;
   height: auto;
-  min-height: auto;
-  max-height: none;
+  max-height: 610px;
   position: relative;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 /* Grid layout */
@@ -499,8 +501,7 @@
 .card {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(70, 82, 104, 0.1);
-  border: 1px solid rgba(70, 82, 104, 0.1);
+  border: 1px solid rgba(96, 111, 139, 0.5);
   transition: all 0.3s ease;
   overflow: hidden;
   display: flex;
@@ -600,7 +601,7 @@
 /* Override paginator styles for grid view */
 ::ng-deep .grid-container .p-paginator {
   background-color: var(--sibasiWhite) !important;
-  padding: 12px 20px !important;
+  padding: 30px 20px 40px 0px !important;
   border-radius: 10px !important;
   color: var(--text-color) !important;
   position: static !important; /* Remove absolute positioning */
@@ -628,9 +629,15 @@
   font-weight: bold !important;
   border-radius: 14px 28px 14px 28px !important;
 }
-
+::ng-deep .grid-container .p-paginator .p-paginator-pages .p-paginator-page.p-highlight:hover,
+::ng-deep .grid-container .p-paginator .p-paginator-pages .p-paginator-page.p-paginator-page-selected:hover{
+  background: linear-gradient(271.89deg, #465268, #7382a1) !important;
+  color: var(--sibasiWhite) !important;
+  font-weight: bold !important;
+  border-radius: 14px 28px 14px 28px !important;
+}
 ::ng-deep .grid-container .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
-  background-color: var(--sibasiGreyLight) !important;
+  background-color: var(--sibasiGrey) !important;
   color: var(--text-color) !important;
   border-radius: 14px 28px 14px 28px !important;
   font-weight: bold !important;
@@ -672,6 +679,7 @@
     border: 2px solid #7382a1 !important;
     padding: 0px 15px !important;
     border-radius: 14px 28px 14px 28px !important;
+    display: none !important;
 }
 
 ::ng-deep .grid-container .p-paginator-rpp-dropdown:focus {
@@ -712,6 +720,13 @@
     height: 32px !important;
     font-size: 0.8rem !important;
   }
+}
+
+::ng-deep .grid-container .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
+  background-color:var(--sibasiGrey) !important;
+  color: var(--sibasiWhite)   !important;
+  border-radius: 14px 28px 14px 28px;
+  font-weight: bold;
 }
 
 @media (max-width: 480px) {
