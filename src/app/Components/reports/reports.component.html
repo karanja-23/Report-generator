@@ -1,10 +1,10 @@
-<div class="container" >
+<div class="container">
   <div class="head">
     <button class="create-btn" (click)="toggleAddModal()">
       <i class="pi pi-plus"></i>
       <span>Create Report</span>
     </button>
-    <div style="display: flex;gap: 24px; align-items: center;">
+    <div style="display: flex; gap: 24px; align-items: center">
       <div class="search">
         <i class="pi pi-search"></i>
         <input
@@ -15,10 +15,18 @@
         />
       </div>
       <div class="view">
-        <div class="list" [class.active]="currentView === 'list'" (click)="setView('list')">
+        <div
+          class="list"
+          [class.active]="currentView === 'list'"
+          (click)="setView('list')"
+        >
           <i class="pi pi-list"></i>
         </div>
-        <div class="grid" [class.active]="currentView === 'grid'" (click)="setView('grid')">
+        <div
+          class="grid"
+          [class.active]="currentView === 'grid'"
+          (click)="setView('grid')"
+        >
           <i class="pi pi-th-large"></i>
         </div>
       </div>
@@ -27,8 +35,8 @@
   <div class="table" *ngIf="currentView === 'list'">
     <p-table
       [value]="filteredProjects"
-      [paginator]="filteredProjects.length > 0 ? true : false"   
-      [first]="listFirst"   
+      [paginator]="filteredProjects.length > 0 ? true : false"
+      [first]="listFirst"
       [showCurrentPageReport]="true"
       [rows]="5"
       [tableStyle]="{ 'min-width': '50rem' }"
@@ -55,13 +63,12 @@
         <tr (click)="onClickReport(project.id)">
           <td>{{ project.created_at }}</td>
           <td>{{ project.name }}</td>
-          <td style="padding-left: 6%;">{{ project.findings.length }}</td>
+          <td style="padding-left: 6%">{{ project.findings.length }}</td>
           <td style="text-align: center">
             <i class="pi pi-angle-double-right"></i>
           </td>
         </tr>
       </ng-template>
-     
     </p-table>
   </div>
   <div class="grid-container" *ngIf="currentView === 'grid'">
@@ -72,7 +79,7 @@
             <h3>{{ project.name }}</h3>
           </div>
           <div class="card-date">
-            <p>{{ project.created_at | date:'medium' }}</p>
+            <p>{{ project.created_at | date : "medium" }}</p>
           </div>
         </div>
         <div class="card-body">
@@ -86,59 +93,86 @@
         </div>
       </div>
     </div>
-  
-    <!-- Empty state -->
-    <div class="grid-empty" *ngIf="!paginatedProjects || paginatedProjects.length === 0">
+
+    <div
+      class="grid-empty"
+      *ngIf="!paginatedProjects || paginatedProjects.length === 0"
+    >
       <i class="fas fa-folder-open"></i>
       <p>No projects found</p>
     </div>
-  
+
     <!-- Paginator container -->
     <div class="grid-paginator-container" *ngIf="gridTotalRecords > 0">
-      <p-paginator 
-        (onPageChange)="onGridPageChange($event)" 
-        [first]="gridFirst" 
-        [rows]="gridRows" 
-        [totalRecords]="gridTotalRecords" 
-        [rowsPerPageOptions]="[4,6]"
+      <p-paginator
+        (onPageChange)="onGridPageChange($event)"
+        [first]="gridFirst"
+        [rows]="gridRows"
+        [totalRecords]="gridTotalRecords"
+        [rowsPerPageOptions]="[4, 6]"
         [showCurrentPageReport]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} projects">
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} projects"
+      >
       </p-paginator>
     </div>
   </div>
 
-  <ng-container class="card flex justify-center" >
-
-    <p-dialog header="Create new report" [modal]="true" [blockScroll]="true" [style]="{ width: '25rem'}" [(visible)]="showAddModal" [closable]="true" [styleClass]="modalClass" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" (onMaximize)="onMaximizeChange($event)" (onHide)="handleMinimize()" >
+  <ng-container class="card flex justify-center">
+    <p-dialog
+      header="Create new report"
+      [modal]="true"
+      [blockScroll]="true"
+      [style]="{ width: '25rem' }"
+      [(visible)]="showAddModal"
+      [closable]="true"
+      [styleClass]="modalClass"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+      [maximizable]="true"
+      (onMaximize)="onMaximizeChange($event)"
+      (onHide)="handleMinimize()"
+    >
       <div class="form">
         <div class="inputs">
           <label for="name">Name</label>
-          <input [(ngModel)]="reportName" type="text" pInputText id="name"  />
+          <input [(ngModel)]="reportName" type="text" pInputText id="name" />
         </div>
         <div class="inputs">
           <label for="date">Date created</label>
-          <p-datepicker  [styleClass]="'date-ng'"   [(ngModel)]="reportCreatedAt" [showIcon]="true" inputId="buttondisplay" [showOnFocus]="false" />
+          <p-datepicker
+            [styleClass]="'date-ng'"
+            [(ngModel)]="reportCreatedAt"
+            [showIcon]="true"
+            inputId="buttondisplay"
+            [showOnFocus]="false"
+          />
         </div>
         <div class="inputs">
-          <label  for="description">Description</label>
-          <div class="editor-wrapper" style="text-align: left;" >
-            <div id="editorjs" class="editor-container" style="text-align: left;"></div>
+          <label for="description">Description</label>
+          <div class="editor-wrapper" style="text-align: left">
+            <div
+              id="editorjs"
+              class="editor-container"
+              style="text-align: left"
+            ></div>
           </div>
         </div>
-        <div class="btns" style="gap: 20px; margin-top: 30px; width: 98%; justify-content: flex-end; ">
+        <div
+          class="btns"
+          style="
+            gap: 20px;
+            margin-top: 30px;
+            width: 98%;
+            justify-content: flex-end;
+          "
+        >
           <button class="create-btn" (click)="handleCreateNewProject()">
             <i class="pi pi-plus"></i>
             <span>Create new</span>
           </button>
-          
         </div>
-       
       </div>
-        
     </p-dialog>
-</ng-container>
+  </ng-container>
 </div>
 <p-toast />
-<app-loading  *ngIf="isLoading">
-
-</app-loading>
+<app-loading *ngIf="isLoading"> </app-loading>

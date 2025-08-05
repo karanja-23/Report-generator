@@ -9,17 +9,25 @@ import { MessageService } from 'primeng/api';
 import { Router, NavigationEnd } from '@angular/router';
 import { LoadingComponent } from './Components/loadingmain/loading.component';
 import { filter } from 'rxjs/operators';
-import {PopoverModule} from 'primeng/popover';
-
+import { PopoverModule } from 'primeng/popover';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, RouterLink, RouterLinkActive, ReactiveFormsModule, ToastModule, LoadingComponent, PopoverModule],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    ReactiveFormsModule,
+    ToastModule,
+    LoadingComponent,
+    PopoverModule,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  providers: [MessageService]
+  providers: [MessageService],
 })
-export class AppComponent implements OnInit,AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit {
   menuIsOpen: boolean = true;
   toggleIcon: string = 'pi pi-circle-on';
   menuIsLocked: boolean = true;
@@ -39,10 +47,8 @@ export class AppComponent implements OnInit,AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    
     this.initializeAuth();
     this.watchRouteChanges();
-       
   }
 
   ngAfterViewInit() {
@@ -51,7 +57,7 @@ export class AppComponent implements OnInit,AfterViewInit {
 
   private watchRouteChanges(): void {
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         const isAuthPage = event.url === '/login';
         this.projectViewService.setRenderingAuthpage(isAuthPage);
@@ -60,10 +66,10 @@ export class AppComponent implements OnInit,AfterViewInit {
 
   async initializeAuth() {
     this.loading = true;
-    
+
     try {
       const token = this.loginService.getToken();
-      
+
       if (!token) {
         // No token - only redirect to login if not already there
         this.handleUnauthenticated();
@@ -88,7 +94,7 @@ export class AppComponent implements OnInit,AfterViewInit {
       if (stored && stored !== 'undefined') {
         const parsed = JSON.parse(stored);
         const accessToken = parsed?.['access_token'];
-        
+
         if (accessToken) {
           const user = await this.loginService.getProtectedUser(accessToken);
           const isAuthenticated = !!user?.email;
@@ -96,10 +102,8 @@ export class AppComponent implements OnInit,AfterViewInit {
           this.loggedUser = user;
           this.loginService.loggedUser = user;
           this.setAuthState(isAuthenticated);
-          
+
           if (isAuthenticated) {
-            // User is authenticated - stay on current page
-            // No navigation needed, just maintain auth state
             console.log('User authenticated, staying on current page');
           } else {
             // Token is invalid/expired
@@ -128,11 +132,11 @@ export class AppComponent implements OnInit,AfterViewInit {
   private handleUnauthenticated() {
     this.setAuthState(false);
     const currentUrl = this.router.url;
-    
+
     // Only redirect to login if not already there
     if (currentUrl !== '/login') {
-      this.router.navigate(['/login'], { 
-        queryParams: { returnUrl: currentUrl } 
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: currentUrl },
       });
     }
   }
@@ -140,12 +144,12 @@ export class AppComponent implements OnInit,AfterViewInit {
   private handleInvalidAuth() {
     this.setAuthState(false);
     localStorage.removeItem('token');
-    
+
     const currentUrl = this.router.url;
     // Only redirect to login if not already there, and store return URL
     if (currentUrl !== '/login') {
-      this.router.navigate(['/login'], { 
-        queryParams: { returnUrl: currentUrl } 
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: currentUrl },
       });
     }
   }
@@ -156,22 +160,21 @@ export class AppComponent implements OnInit,AfterViewInit {
   }
 
   shouldHideMenu(): boolean {
-    // Use the service state directly instead of component state
     const isLoggedIn = this.loginService.isLoggedIn;
-    
-    
-    
+
     if (!this.authInitialized || this.loading) {
       return true;
     }
-    
+
     const currentUrl = this.router.url;
     const isAuthPage = currentUrl === '/login' || currentUrl === '/register';
-    
-    return this.projectViewService.expandReport || 
-           this.projectViewService.isRenderingAuthpage ||
-           isAuthPage || 
-           !isLoggedIn; // Use service state instead of component state
+
+    return (
+      this.projectViewService.expandReport ||
+      this.projectViewService.isRenderingAuthpage ||
+      isAuthPage ||
+      !isLoggedIn
+    );
   }
 
   toggleMenu() {
@@ -185,7 +188,7 @@ export class AppComponent implements OnInit,AfterViewInit {
       setTimeout(() => {
         this.justUnpinned = false;
       }, 100);
-      
+
       return;
     } else {
       this.menuIsLocked = true;
@@ -224,11 +227,11 @@ export class AppComponent implements OnInit,AfterViewInit {
   logout() {
     this.loading = true;
     setTimeout(() => {
-    this.loading = false;
-    this.loginService.logout();
-    this.loginService.loggedUser = null;
-    this.setAuthState(false);
-    this.router.navigate(['/login']);
-    },3000);
+      this.loading = false;
+      this.loginService.logout();
+      this.loginService.loggedUser = null;
+      this.setAuthState(false);
+      this.router.navigate(['/login']);
+    }, 3000);
   }
 }

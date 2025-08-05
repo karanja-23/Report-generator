@@ -1,4 +1,11 @@
-import { Component, OnInit,PLATFORM_ID,Inject,AfterViewInit,OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  PLATFORM_ID,
+  Inject,
+  AfterViewInit,
+  OnDestroy,
+} from '@angular/core';
 import { ReportsService } from '../../Services/reports.service';
 import { Projects } from '../../Interfaces/projects';
 import { TableModule } from 'primeng/table';
@@ -16,15 +23,26 @@ import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-reports',
-  imports: [TableModule, CommonModule,FormsModule,RouterModule,DialogModule, ButtonModule, DatePickerModule, ToastModule, LoadingComponent, PaginatorModule],
+  imports: [
+    TableModule,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    DialogModule,
+    ButtonModule,
+    DatePickerModule,
+    ToastModule,
+    LoadingComponent,
+    PaginatorModule,
+  ],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css',
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class ReportsComponent implements OnInit, OnDestroy {
   projects: Projects[] = [];
   filteredProjects: Projects[] = [];
-  searchTerm:string = '';
+  searchTerm: string = '';
   selectedProjectId: number | null = null;
   isLoading: boolean = true;
   showAddModal: boolean = false;
@@ -33,7 +51,7 @@ export class ReportsComponent implements OnInit, OnDestroy {
   editor!: any;
   private editorInitialized: boolean = false;
   currentView: 'list' | 'grid' = 'list';
-  
+
   gridFirst = 0;
   gridRows = 4;
   gridTotalRecords = 0;
@@ -47,61 +65,64 @@ export class ReportsComponent implements OnInit, OnDestroy {
   reportCreatedAt: Date = new Date();
   createProjectMessage: string = '';
 
-
   constructor(
     private router: Router,
     public reportsService: ReportsService,
     public projectViewService: ProjectViewService,
     private messageService: MessageService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ){
+  ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  async ngOnInit(){
-   
+  async ngOnInit() {
     this.isLoading = true;
     this.projects = await this.reportsService.getProjects();
     this.filteredProjects = this.projects;
     this.projectViewService.setView(false);
     this.isLoading = false;
     this.updateGridPaginatedData();
-  
   }
   updateGridPaginatedData() {
     this.gridTotalRecords = this.filteredProjects.length;
-    this.paginatedProjects = this.filteredProjects.slice(this.gridFirst, this.gridFirst + this.gridRows);
+    this.paginatedProjects = this.filteredProjects.slice(
+      this.gridFirst,
+      this.gridFirst + this.gridRows
+    );
   }
   ngOnDestroy(): void {
     this.projectViewService.setRenderingAuthpage(false);
   }
   setView(view: 'list' | 'grid') {
     this.currentView = view;
-
-}
-onGridPageChange(event: any) {
-  this.gridFirst = event.first;
-  this.gridRows = event.rows;
-  this.updateGridPaginatedData();
-}
-searchProjects(searchValue: string) {
-  if (!searchValue || searchValue.trim() === '') {
-    this.filteredProjects = this.projects;
-  } else {
-    this.filteredProjects = this.projects.filter(project => 
-      (project.name.toLowerCase() ?? '').includes(searchValue.toLowerCase()) ||
-      (project.created_at.toLowerCase() ?? '').includes(searchValue.toLowerCase())
-    );
   }
-  
-  // Reset both paginations to first page when searching
-  this.gridFirst = 0;
-  this.listFirst = 0;
-  
-  // Update grid paginated data
-  this.updateGridPaginatedData();
-}
-  onClickReport(reportId: number){
+  onGridPageChange(event: any) {
+    this.gridFirst = event.first;
+    this.gridRows = event.rows;
+    this.updateGridPaginatedData();
+  }
+  searchProjects(searchValue: string) {
+    if (!searchValue || searchValue.trim() === '') {
+      this.filteredProjects = this.projects;
+    } else {
+      this.filteredProjects = this.projects.filter(
+        (project) =>
+          (project.name.toLowerCase() ?? '').includes(
+            searchValue.toLowerCase()
+          ) ||
+          (project.created_at.toLowerCase() ?? '').includes(
+            searchValue.toLowerCase()
+          )
+      );
+    }
+
+    this.gridFirst = 0;
+    this.listFirst = 0;
+
+    // Update grid paginated data
+    this.updateGridPaginatedData();
+  }
+  onClickReport(reportId: number) {
     this.router.navigate(['reports', reportId]);
   }
   selectProject(projectId: number) {
@@ -111,7 +132,7 @@ searchProjects(searchValue: string) {
       this.selectedProjectId = projectId;
     }
   }
-  
+
   onListPageChange(event: any) {
     this.listFirst = event.first;
     this.listRows = event.rows;
@@ -122,9 +143,7 @@ searchProjects(searchValue: string) {
       setTimeout(() => {
         this.initializeEditor();
       }, 300);
-    
     }
-
   }
   onMaximizeChange(event: { maximized: boolean }) {
     if (event.maximized) {
@@ -132,7 +151,6 @@ searchProjects(searchValue: string) {
     } else {
       this.handleMinimize();
     }
-    
   }
   handleMaximize() {
     this.projectViewService.setView(true);
@@ -141,27 +159,32 @@ searchProjects(searchValue: string) {
     this.projectViewService.setView(false);
   }
 
-
-  async handleCreateNewProject(){
+  async handleCreateNewProject() {
     const editorData = await this.editor.save();
 
     const newProject = {
       name: this.reportName,
       description: editorData,
-      created_at: this.reportCreatedAt
-    }
-    this.createProjectMessage = await this.reportsService.createProject(newProject);
+      created_at: this.reportCreatedAt,
+    };
+    this.createProjectMessage = await this.reportsService.createProject(
+      newProject
+    );
     this.showSuccess();
     this.projects = await this.reportsService.getProjects();
     this.filteredProjects = this.projects;
     this.toggleAddModal();
   }
   showSuccess() {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: this.createProjectMessage, life: 5000 });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: this.createProjectMessage,
+      life: 5000,
+    });
   }
   async initializeEditor() {
     try {
-      
       const [
         EditorJS,
         InlineCode,
@@ -183,73 +206,62 @@ searchProjects(searchValue: string) {
         import('@editorjs/underline'),
         import('@editorjs/table'),
       ]);
-  
+
       this.editor = new EditorJS.default({
         holder: 'editorjs',
-        
+
         placeholder: 'Enter project description...',
-        
-        // Auto-focus on initialization
+
         autofocus: true,
-        
-        // Enable inline toolbar
+
         inlineToolbar: ['inlineCode', 'underline'],
-        
-        // Remove sanitizer to use default configuration
-        
-        // Tools configuration
+
         tools: {
-          // Header tool
           header: {
             class: Header.default as any,
             config: {
               placeholder: 'Enter a header',
               levels: [1, 2, 3, 4, 5, 6],
-              defaultLevel: 2
-            }
+              defaultLevel: 2,
+            },
           },
-          
-          // List tool with enhanced config
+
           list: {
             class: List.default as any,
             inlineToolbar: true,
             config: {
-              defaultStyle: 'unordered'
-            }
+              defaultStyle: 'unordered',
+            },
           },
-          
-          // Quote tool
+
           quote: {
             class: Quote.default,
             inlineToolbar: true,
             config: {
               quotePlaceholder: 'Enter a quote',
-              captionPlaceholder: 'Quote\'s author'
-            }
+              captionPlaceholder: "Quote's author",
+            },
           },
-          
-          // Code block
+
           code: {
             class: CodeTool.default,
             config: {
-              placeholder: 'Enter code here...'
-            }
+              placeholder: 'Enter code here...',
+            },
           },
-          
-          // Delimiter
+
           delimiter: {
-            class: Delimiter.default
+            class: Delimiter.default,
           },
-          
-          // Inline tools
+
           inlineCode: {
             class: InlineCode.default,
-            shortcut: 'CMD+SHIFT+M'
+            shortcut: 'CMD+SHIFT+M',
           },
-                   
+
           underline: {
             class: Underline.default,
-            shortcut: 'CMD+U'
+            shortcut: 'CMD+U',
           },
           table: {
             class: TableModule.default as any,
@@ -257,24 +269,21 @@ searchProjects(searchValue: string) {
               rows: 2,
               cols: 2,
             },
-          }
+          },
         },
-        
+
         onReady: () => {
           console.log('EditorJS is ready');
         },
         onChange: (api, event) => {
           console.log('EditorJS content changed');
         },
-        logLevel: 'ERROR' as any
+        logLevel: 'ERROR' as any,
       });
-      
+
       this.editorInitialized = true;
-  
     } catch (error) {
       console.error('Failed to initialize EditorJS:', error);
     }
   }
-
-  
 }
