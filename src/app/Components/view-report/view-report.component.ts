@@ -855,7 +855,7 @@ export class ViewReportComponent implements OnInit, AfterViewInit, OnDestroy {
       this.showSuccess();
       setTimeout(() => {
         this.router.navigate(['/reports']);
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.error('Error deleting project:', error);
       this.editProjectMessage = 'Error deleting project';

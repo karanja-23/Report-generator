@@ -160,6 +160,7 @@ export class ReportsComponent implements OnInit, OnDestroy {
   }
 
   async handleCreateNewProject() {
+    
     const editorData = await this.editor.save();
 
     const newProject = {
@@ -167,13 +168,19 @@ export class ReportsComponent implements OnInit, OnDestroy {
       description: editorData,
       created_at: this.reportCreatedAt,
     };
+    this.showAddModal = false;
+    this.isLoading = true;
+
     this.createProjectMessage = await this.reportsService.createProject(
       newProject
     );
+    this.isLoading = false;
     this.showSuccess();
     this.projects = await this.reportsService.getProjects();
     this.filteredProjects = this.projects;
-    this.toggleAddModal();
+    this.reportName = '';
+    this.reportDescription = '';
+    this.reportCreatedAt = new Date();
   }
   showSuccess() {
     this.messageService.add({

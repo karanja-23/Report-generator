@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   returnUrl: string = '/'; // Default return URL
   isRedirecting: boolean = false;
+  showPassword: boolean = false;
   constructor(
     public loginService: LoginService,
     public projectViewService: ProjectViewService,
